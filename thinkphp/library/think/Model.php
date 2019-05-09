@@ -571,7 +571,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
                 $this->autoRelationUpdate();
             }
 
-            return true;
+            return false;
         } elseif ($this->autoWriteTimestamp && $this->updateTime && !isset($data[$this->updateTime])) {
             // 自动写入更新时间
             $data[$this->updateTime] = $this->autoWriteTimestamp($this->updateTime);
