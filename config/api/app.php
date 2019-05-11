@@ -9,12 +9,11 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-Route::get('think', function () {
-    return 'hello,ThinkPHP5!';
-});
-
-Route::get('api/:version/moduleList', 'api/:version.module/list');
+// +----------------------------------------------------------------------
+// | 应用设置
+// +----------------------------------------------------------------------
 
 return [
-
-];
+    // 默认输出类型
+    'default_return_type'    => 'json',
+  ];
