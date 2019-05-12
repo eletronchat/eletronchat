@@ -2,11 +2,12 @@
 namespace app\admin\controller;
 
 use think\Controller;
+use think\facade\Request;
 
 class Index extends Controller
 {
     /**
-     * 左则菜单栏
+     * 后台主框架
      *
      */
     public function index()
@@ -16,11 +17,26 @@ class Index extends Controller
 
 
     /**
-     * 首页
-     *
+     * 左则菜单栏
+     * @http    ajax.get
+     * @return  html
      */
     public function layout()
     {
-        return $this->fetch(); 
+        return response($this->fetch());
     }
+
+
+    /*
+     * 主页
+     * @http    ajax.get
+     * @return  html
+     */
+    public function home()
+    {
+        return response($this->fetch());
+    }
+
+
+
 }

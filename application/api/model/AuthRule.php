@@ -1,0 +1,20 @@
+<?php  
+namespace app\api\model;
+
+class AuthRule extends Base
+{
+    /**
+     * 获取右则菜单列表
+     *
+     */
+    public function getSideMenu()
+    {
+      $result = self::where('pid = 0')
+        ->where('is_side_menu = 1')
+        ->field('name as jump,title,icon,data_name as name')
+        ->select();
+      return $result;
+    }
+
+}
+

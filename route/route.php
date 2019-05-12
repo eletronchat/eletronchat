@@ -9,11 +9,11 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-Route::get('think', function () {
-    return 'hello,ThinkPHP5!';
-});
-
+//api 菜单列表
 Route::get('api/:version/moduleList', 'api/:version.module/list');
+
+//后台主页模板 
+//Route::get('static/layui/dist/views/layout', 'admin/index/layout')->ext('html');
 
 return [
 

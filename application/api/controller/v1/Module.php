@@ -1,9 +1,9 @@
 <?php 
 namespace app\api\controller\v1;
 
-use think\Controller;
-  
-class Module extends Controller
+use app\api\model\AuthRule;
+
+class Module extends Base
 {
     /**
      * 获取功能模块列表
@@ -13,17 +13,12 @@ class Module extends Controller
      */
     public function list()
     {
+      $side_menu = (new AuthRule())->getSideMenu();
+      //dump($side_menu);exit;
       return [
         'code' => 0,
         'msg'  => '',
-        'data' => [
-          0 => [
-          "name" => "get",
-          "title"=> "授权",
-          "icon"=> "layui-icon-auz",
-          "jump"=> "system/get" 
-        ]
-        ]  
+        'data' => $side_menu  
       ]; 
     }
 }
