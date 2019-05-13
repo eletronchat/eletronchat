@@ -16,8 +16,9 @@
   <script src="__LAYUI__/src/layui.js"></script>
   <script>
   layui.config({
-    base: '__LAYUI__/dist/' //指定 layuiAdmin 项目路径
+    base: '__LAYUI_ADMIN__/' //指定 layuiAdmin 项目路径
     ,version: '1.2.1'
+    ,app_name: '{:config('app.app_name')}'
   }).use('index', function(){
     var layer = layui.layer, admin = layui.admin;
     layer.ready(function(){

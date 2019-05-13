@@ -34,6 +34,9 @@ return [
     'taglib_end'   => '}',
 
     'tpl_replace_string' => [
-       '__LAYUI__' => '/static/layui'
+      '__LAYUI__'       => '/static/layui', //layui静态资源
+      '__LAYUI_ADMIN__' => '/static/admin' //指定后台前端项目路径
+
+       
     ]
 ];
