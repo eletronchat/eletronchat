@@ -1,4 +1,4 @@
-<style>
+jstyle>
   .diy-tree {
     border:solid 1px #dddddd;
   }
@@ -6,8 +6,8 @@
     float:right;
     padding:0 10px; 
   }
-  
 </style>
+
 <div class="layui-fluid">   
   <div class="layui-card">
     <div class="layui-tab layui-tab-card">
@@ -18,48 +18,33 @@
       <div class="layui-tab-content" >
         <div class="layui-col-space20 layui-tab-item layui-show layui-row ">
           <div class="layui-row layui-col-space10">
-            <div class="layui-col-md2 diy-tree">
-              <div class="layui-col-row diy-tree  diy-tree-top">
-                客服分组
-                <span>
-                  重构
-                </span>
-                <span>
-                  导出
-                </span>
-              </div>
-              <div id="diy-tree">
-              </div>
-            </div> 
-                <div style="height: 670px;overflow: auto;">
-                  <ul id="commonTree4" class="dtree" data-id="0"></ul>
-                </div>
+            <div class="layui-col-md3 diy-tree">
+              <!-- <div class="layui-col-row diy-tree  diy-tree-top"> -->
+                <!-- 客服分组 -->
+                <!-- <span> -->
+                  <!-- 重构 -->
+                <!-- </span> -->
+                <!-- <span> -->
+                  <!-- 导出 -->
+                <!-- </span> -->
+              <!-- </div> -->
+              <!-- <div id="diy-tree"> -->
+              <!-- </div> -->
+            <ul id="tree" class="dtree" data-id="0" style="height:100px;overflow: auto;">
+            </ul>
           </div>
+          
+          <div class="layui-col-md-offset3 diy-tree">
+          </div>
+        </div>
         </div>
         <div class="layui-tab-item">6</div>
       </div>
     </div>
   </div>
 </div>
-  <link href="/static/admin/style/dtree/dtree.css" media="all">
-  <link href="/static/admin/style/dtree/font/dtreefont.css" media="all">
-  <!-- <link rel="stylesheet" href="/static/layui/src/css/layui.css" media="all"> -->
-  <!-- <script src="/static/layui/src/layui.js"></script> -->
 
-<script type="text/javascript">
-	layui.use(['layer', 'table', 'dtree'], function(){
-		var layer = layui.layer,
-			table = layui.table,
-			dtree = layui.dtree,
-			$ = layui.$;
-		
-		// 2.commonTree4
-		dtree.render({
-			elem: "#commonTree4",
-			url: "http://electronchat.com/json/case/commonTree4.json",
-      method: "get",
-			icon: "2",
-			initLevel: "1"
-		});
-	});
+<script>
+  //载入./console/demo 模块
+  layui.use('role', layui.factory('role'));
 </script>

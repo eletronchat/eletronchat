@@ -9,7 +9,8 @@ class Index
       return '<html>
       <body>
           <p>登录</p>
-          <p>文档</p>
+          <p>登录</p>
+          <p><a href="/admin">adminin</a></p>
       </body>
 </html>';
     }

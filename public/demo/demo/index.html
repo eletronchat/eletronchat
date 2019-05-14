@@ -30,9 +30,8 @@
 <script type="text/javascript">
 	layui.extend({
 		dtree: '{/}../layui_ext/dtree/dtree'
-	}).use(['layer', 'table', 'dtree'], function(){
+	}).use(['dtree'], function(){
 		var layer = layui.layer,
-			table = layui.table,
 			dtree = layui.dtree,
 			$ = layui.$;
 		
@@ -44,7 +43,6 @@
 			icon: "2",
 			initLevel: "1"
 		});
-
 			
 	});
 </script>
