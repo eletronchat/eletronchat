@@ -31,7 +31,9 @@
               <div id="diy-tree">
               </div>
             </div> 
-             <ul id="demoTree" class="dtree" data-id="0"></ul>
+                <div style="height: 670px;overflow: auto;">
+                  <ul id="commonTree4" class="dtree" data-id="0"></ul>
+                </div>
           </div>
         </div>
         <div class="layui-tab-item">6</div>
@@ -41,21 +43,23 @@
 </div>
   <link href="/static/admin/style/dtree/dtree.css" media="all">
   <link href="/static/admin/style/dtree/font/dtreefont.css" media="all">
-<script>
-  layui.extend('dtree').use(['dtree','layer','jquery'], function(){
-    var dtree = layui.dtree, layer = layui.layer, $ = layui.jquery;
-    var DemoTree = dtree.render({
-      elem: "#demoTree",
-      url: "/json/tree/demo.json",
-      type: "all",
-      initLevel: "1",
-      method: "get",
-      icon: "2"  //修改二级图标样式
-    });
+  <!-- <link rel="stylesheet" href="/static/layui/src/css/layui.css" media="all"> -->
+  <!-- <script src="/static/layui/src/layui.js"></script> -->
 
-    // 点击节点触发回调
-    dtree.on("node('demoTree')" ,function(obj){
-      layer.msg(JSON.stringify(obj.param));
-    });
-  });
+<script type="text/javascript">
+	layui.use(['layer', 'table', 'dtree'], function(){
+		var layer = layui.layer,
+			table = layui.table,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		// 2.commonTree4
+		dtree.render({
+			elem: "#commonTree4",
+			url: "http://electronchat.com/json/case/commonTree4.json",
+      method: "get",
+			icon: "2",
+			initLevel: "1"
+		});
+	});
 </script>

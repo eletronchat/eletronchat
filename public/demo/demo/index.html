@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>layui.dtree帮助手册</title>
+<link rel="stylesheet" href="../layui/css/layui.css">
+<script type="text/javascript" src="../layui/layui.js"></script>
+
+<link rel="stylesheet" href="../layui_ext/dtree/dtree.css">
+<link rel="stylesheet" href="../layui_ext/dtree/font/dtreefont.css">
+
+<link rel="stylesheet" href="case.css">
+</head>
+<body>
+			<div class="layui-fluid">
+				<fieldset class="layui-elem-field layui-field-title" id="zdyjdzk">
+					<div class="layui-field-box">
+						<div class="layui-row layui-col-space10" style="margin-top: 10px;">
+							<div class="layui-col-lg4">
+                <div style="height: 670px;overflow: auto;">
+                  <ul id="commonTree4" class="dtree" data-id="0"></ul>
+                </div>
+              </div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+</body>
+<script type="text/javascript">
+	layui.extend({
+		dtree: '{/}../layui_ext/dtree/dtree'
+	}).use(['layer', 'table', 'dtree'], function(){
+		var layer = layui.layer,
+			table = layui.table,
+			dtree = layui.dtree,
+			$ = layui.$;
+		
+		// 2.commonTree4
+		dtree.render({
+			elem: "#commonTree4",
+			url: "http://electronchat.com/json/case/commonTree4.json",
+      method: "get",
+			icon: "2",
+			initLevel: "1"
+		});
+
+			
+	});
+</script>
+</html>
