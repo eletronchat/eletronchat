@@ -12,6 +12,7 @@ class AuthRule extends Base
       $result = self::where('pid = 0')
         ->where('is_side_menu = 1')
         ->field('jump,title,icon,data_name as name')
+        ->field('title,icon,data_name as name,jump')
         ->select();
       return $result;
     }

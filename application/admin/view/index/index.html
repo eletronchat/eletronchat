@@ -14,13 +14,15 @@
 <body>
   <div id="LAY_app"></div>
   <script src="__LAYUI__/src/layui.js"></script>
+  <link href="__LAYUI_ADMIN__/style/dtree/dtree.css" media="all">
+  <link href="__LAYUI_ADMIN__/style/dtree/font/dtreefont.css" media="all">
   <script>
   layui.config({
     base: '__LAYUI_ADMIN__/' //指定 layuiAdmin 项目路径
     ,version: '1.2.1'
     ,app_name: '{:config('app.app_name')}'
     ,rest_url: '/api/v1' //REST api接口基地址
-  }).use('index', function(){
+  }).use(['index', 'dtree'], function(){
     var layer = layui.layer, admin = layui.admin;
     layer.ready(function(){
       admin.popup({

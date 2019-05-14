@@ -28,19 +28,10 @@
                   导出
                 </span>
               </div>
-              你的内容 3/12
-              你的内容 3/12
-              你的内容 3/12
-              你的内容 3/12
-              你的内容 3/12
-              你的内容 3/12
-              你的内容 3/12
-              你的内容 3/12
-              你的内容 3/12
+              <div id="diy-tree">
+              </div>
             </div> 
-            <div class="layui-col-md-offset3  diy-tree">
-              你的内容 9/12
-            </div> 
+             <ul id="demoTree" class="dtree" data-id="0"></ul>
           </div>
         </div>
         <div class="layui-tab-item">6</div>
@@ -48,4 +39,23 @@
     </div>
   </div>
 </div>
+  <link href="/static/admin/style/dtree/dtree.css" media="all">
+  <link href="/static/admin/style/dtree/font/dtreefont.css" media="all">
+<script>
+  layui.extend('dtree').use(['dtree','layer','jquery'], function(){
+    var dtree = layui.dtree, layer = layui.layer, $ = layui.jquery;
+    var DemoTree = dtree.render({
+      elem: "#demoTree",
+      url: "/json/tree/demo.json",
+      type: "all",
+      initLevel: "1",
+      method: "get",
+      icon: "2"  //修改二级图标样式
+    });
 
+    // 点击节点触发回调
+    dtree.on("node('demoTree')" ,function(obj){
+      layer.msg(JSON.stringify(obj.param));
+    });
+  });
+</script>
