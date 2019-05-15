@@ -1,5 +1,5 @@
 <?php 
-namespace app\api\server;
+namespace app\api\service;
 
 class Base 
 {

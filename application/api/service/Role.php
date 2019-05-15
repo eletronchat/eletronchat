@@ -9,7 +9,7 @@
 namespace app\api\service;
 
 use app\api\model\Member; 
-
+use app\api\service\Base;
 class Role extends Base
 {
     /**
@@ -19,11 +19,11 @@ class Role extends Base
     public function getAllUser()
     {
         $count = Member::count();
-        $data['title']    = "所有{$count}";
+        $data['title']    = "所有({$count})";
         $data['id']       = 0;
         $data['parentId'] = 0;
         $data['spread']   = true;
-        return $data;
+        dump($data);exit;
     } 
 }
 
