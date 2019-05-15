@@ -16,7 +16,7 @@
       $ = layui.$;
     dtree.render({
       elem: "#tree",
-      url: "http://electronchat.com/json/case/commonTree4.json",
+      url: layui.cache.rest_url+"/group",
       method: "get",
       icon: "2",
       initLevel: "1",

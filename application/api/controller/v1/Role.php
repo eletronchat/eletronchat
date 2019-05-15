@@ -21,7 +21,7 @@ class Role extends Base
     public function getAllGroup()
     {
         $result = (new RoleService())->getAllUser();
-        dump($result->isEmpty());
+        return $result;
     }
 
 
