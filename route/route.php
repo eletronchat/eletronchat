@@ -11,9 +11,11 @@
 
 //api 菜单列表
 Route::get('api/:version/moduleList', 'api/:version.module/list');
-
-//后台主页模板 
-//Route::get('static/layui/dist/views/layout', 'admin/index/layout')->ext('html');
+//api 客服管理
+Route::Group('api/:version', function(){
+  //客服分类列表
+  Route::get('/group', 'api/:version.Role/getAllGroup');
+});
 
 return [
 
