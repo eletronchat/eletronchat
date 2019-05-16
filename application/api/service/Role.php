@@ -21,24 +21,22 @@ class Role extends Base
     public function getAllUser()
     {
         $count = Member::count();
+        $count_no_count = (new Member())->countNotBelong();
         $data[] = [
           'title'    => "所有({$count})",
           'id'       => 0,
+          'spread'   => true,
           'parentId' => 0,
-          'spread'   => true
-        ];
-        $count_no_count = (new Member())->countNotBelong();
-        $data[] = [
-          'title'    => "未分组({$count_no_count})",
-          'id'       => 0,
-          'parentId' => 0,
-        ];
-        $data[] = [
-          'code'=> 200,
-          'message' => 'success'
+          'children' => [[
+            'title'    => "未分组({$count_no_count})",
+            'id'       => -1,
+            'parentId' => 0-1 
+          ]]
         ];
         return $data;
     } 
+
+  
 }
 
 

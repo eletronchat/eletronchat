@@ -20,8 +20,12 @@ class Role extends Base
      **/ 
     public function getAllGroup()
     {
-        $result = (new RoleService())->getAllUser();
-        return $result;
+        $data['data'] = (new RoleService())->getAllUser();
+        $data['status'] = [
+          'code'=> 200,
+          'message' => 'success'
+        ];
+        return $data ;
     }
 
 
