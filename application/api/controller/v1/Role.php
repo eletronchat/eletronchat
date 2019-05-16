@@ -9,6 +9,8 @@
 namespace app\api\controller\v1;
 
 use app\api\service\Role as RoleService;
+use think\facade\Request;
+
  
 class Role extends Base
 {
@@ -29,6 +31,22 @@ class Role extends Base
     }
 
 
+    /**
+     * 增加节点
+     * @url     /api/v1/group
+     * @http    post
+     * @return  json 
+     */
+    public function addNode()
+    {
+        //验证拦截线
+          // ...
+        (new RoleService())->addGroup();
+        return ['code' => 200, 'massage' => 'success'];
+        
+    }
+
+    
     /**
      * 获取单组用户详情
      * @id=0 代表所有用户 
