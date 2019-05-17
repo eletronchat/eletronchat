@@ -63,9 +63,9 @@ class Role extends Base
     {
       foreach($arr as $k=> $v) {
         array_shift($arr);
-        $node['id'] = str_replace('-', '', substr($v['fullpath'], 2) . $v['id']);
+        $node['id'] = $v['id'];
         $node['title'] = $v['title'] . "(" . $v['count'] . ")";
-        $node['parentId'] = str_replace('-', '', substr($v['fullpath'], 1));
+        $node['parentId'] = str_replace('-', ' ', substr($v['fullpath'], 1));
         if (count($arr) === 0) return [$node];
         $nextNode = reset($arr);
         if ($v['fullpath'] == '0-0') {

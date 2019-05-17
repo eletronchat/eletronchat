@@ -14,6 +14,12 @@
 // +----------------------------------------------------------------------
 
 return [
+    // 异常处理handle类 
+    'exception_handle'       => '\app\lib\exception\exceptionhandler',
+    //日志异常日志配置
+    'log' => [
+        'path' => env::get('root_path') . 'log/'
+    ],
     // 默认输出类型
     'default_return_type'    => 'json',
   ];

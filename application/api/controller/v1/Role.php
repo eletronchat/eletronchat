@@ -10,7 +10,7 @@ namespace app\api\controller\v1;
 
 use app\api\service\Role as RoleService;
 use think\facade\Request;
-
+use app\api\validate\DtreeAddNode;
  
 class Role extends Base
 {
@@ -39,10 +39,10 @@ class Role extends Base
      */
     public function addNode()
     {
-        //验证拦截线
-          // ...
-        (new RoleService())->addGroup();
-        return ['code' => 200, 'massage' => 'success'];
+       //验证拦截线
+       (new DtreeAddNode())->gocheck(); 
+       (new RoleService())->addGroup();
+       return ['code' => 200, 'massage' => 'success'];
         
     }
 
