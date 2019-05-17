@@ -22,13 +22,13 @@ class Role extends Base
      */
     public function getAllUser()
     {
-        $count = Member::count();
-        $count_no_count = (new Member())->countNotBelong();
-        $memberGroup = (new MemberGroup())->getGroup();
-        $otherNode = [
-            'title'    => "未分组({$count_no_count})",
-            'id'       => -1,
-            'parentId' => 0-1 
+        $count           = Member::count();
+        $count_no_count  = (new Member())->countNotBelong();
+        $memberGroup     = (new MemberGroup())->getGroup();
+        $otherNode       = [
+            'title'     => "未分组({$count_no_count})",
+            'id'        => -1,
+            'parentId'  => 0-1
           ];
         $subNode = $this->_arrToTree($memberGroup->toArray());
         $subNode[] = $otherNode; 
@@ -64,7 +64,7 @@ class Role extends Base
       foreach($arr as $k=> $v) {
         array_shift($arr);
         $node['id'] = str_replace('-', '', substr($v['fullpath'], 2) . $v['id']);
-        $node['title'] = $v['title'];
+        $node['title'] = $v['title'] . "(" . $v['count'] . ")";
         $node['parentId'] = str_replace('-', '', substr($v['fullpath'], 1));
         if (count($arr) === 0) return [$node];
         $nextNode = reset($arr);

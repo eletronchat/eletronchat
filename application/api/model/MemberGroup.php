@@ -11,12 +11,21 @@ class MemberGroup extends Base
    */
   public function getGroup()
   {
-    $result = self::field(['name'=>'title', 'pid', 'id', 'concat(path,"-",pid)'=>'fullpath'])
-        ->order('fullpath') 
-        ->select();
+    $result = self::withCount(['memberGroupAccess'=>'count'])
+      ->field(['name'=>'title', 'pid', 'id', 'concat(path,"-",pid)'=>'fullpath'])
+      ->order('fullpath') 
+      ->select();
       return $result;
   }
   
-    
+  /**
+   * 关联户分组-用户中间表
+   *
+   */ 
+  public function memberGroupAccess()
+  {
+      return $this->hasMany('MemberGroupAccess', 'member_group_id', 'id');
+  }
+  
 }
 
