@@ -14,12 +14,7 @@ class Module extends Base
     public function list()
     {
       $side_menu = (new AuthRule())->getSideMenu();
-      //dump($side_menu);exit;
-      return [
-        'code' => 0,
-        'msg'  => '',
-        'data' => $side_menu  
-      ]; 
+      return parent::successMessage($side_menu);
     }
 }
 

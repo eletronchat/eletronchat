@@ -33,10 +33,12 @@
             url: layui.cache.rest_url+"/group",
             success: function(result){
               console.log(result); 
-              //DTree1.changeTreeNodeAdd(treeNode.nodeId); // 添加成功，返回ID
-              //DTree1.changeTreeNodeAdd(true); // 添加成功
-              //DTree1.changeTreeNodeAdd(result.data); // 添加成功，返回一个JSON对象
-              DTree1.changeTreeNodeAdd("refresh"); // 添加成功，局部刷新树
+              if (result.id) {
+                DTree1.changeTreeNodeAdd(treeNode.nodeId); // 添加成功，返回ID
+                //DTree1.changeTreeNodeAdd(true); // 添加成功
+                //DTree1.changeTreeNodeAdd(result.data); // 添加成功，返回一个JSON对象
+                DTree1.changeTreeNodeAdd("refresh"); // 添加成功，局部刷新树
+              }
             },
             error: function(){
               //DTree1.changeTreeNodeAdd(false); // 添加失败

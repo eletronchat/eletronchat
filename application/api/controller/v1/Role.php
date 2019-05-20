@@ -42,10 +42,11 @@ class Role extends Base
        //验证拦截线
        (new DtreeAddNode())->gocheck(); 
        //添加子节点
-       $isAdd = (new RoleService())->addGroup();
-        
-       return ['code' => 200, 'massage' => 'success'];
-        
+       $result = (new RoleService())->addGroup();
+       //if (!$result->empty()) {
+       //  $id = $result->id;
+       //  return  parent::successMessage(['nodeId'=>$id]);
+       //}
     }
 
     

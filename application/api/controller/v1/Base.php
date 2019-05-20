@@ -16,9 +16,20 @@ class Base extends Controller
      * 返回成功消息
      * @style   array  数据返回风格格式，默认layui风格
      */  
-    public function successMessage($style = [])
+    public function successMessage($mix = [])
     {
-        if (array_key_exists(''))
+      //dtree 风格
+      if (array_key_exists('style', $mix) && $mix['style'] === 'dtree') 
+      {
+        return ['status'=>['code' => 200, 'massage' => 'success', ], 'data' => $mix['data'] ];
+      }
+      //默认layui风格
+      $data = array_key_exists('data', $mix) ? $mix['data'] : $mix;
+      return [
+        'code' => 0,
+        'msg'  => 'sucess',
+        'data' => $data
+      ]; 
     }
 }
 

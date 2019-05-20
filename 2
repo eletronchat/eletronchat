@@ -66,32 +66,47 @@ class Role extends Base
      * @return  array   
      *
      */ 
-    protected function _arrToTree($arr)
+    protected function _arrToTree($arr, $tree = [])
     {
-      $result = [];
-      foreach($arr as $v) {
-        $el = [
-          'id' => $v['id'],
-          'title' => $v['title'] . "(" . $v['count'] . ")",
-          'parentId' => $v['pid'],
-          'fullpath' => $v['fullpath']
-        ];
-        if ($v['pid'] === 0) {
-            $result[$el['id']] = $el;
-        } else {
-            $key_path = explode('-', $v['path']);
-            unset($key_path[0]);
-            $eval = '$result';
-            foreach($key_path as $key) {
-              $eval .= '[$key][\'children\']';
-            }
-              $eval .= '[] = $el;';
-              eval($eval);
+      do{
+        $ele = reset($arr); 
+        array_shift($arr);
+        $node['id'] = $ele['id'];
+        $node['title'] = $ele['title'] . "(" . $ele['count'] . ")";
+        $node['parentId'] = $ele['pid'];
+        $node['parentId'] = $ele['pid'];
+        if (isset($arr[0]['fullpath']) && $arr[0]['fullpath'] !== '0-0') {
+          $node['children'] = $this->_arrToTree($arr);
         }
-      }
-      return array_values($result);
+        if ($node['fullpath'] !== '0-0' )  return $node;
+        $isnext = isset($arr[0]) && $arr[0]['fullpath'] == '0-0' ? true : false;
+        $result[] = $node;
+      } while ($isnext);
+      return $result;
+      //foreach($arr as $k=> $v) {
+      //  if ($v['fullpath'] == '0-0') {
+      //    array_shift($arr);
+      //    $node['id'] = $v['id'];
+      //    $node['title'] = $v['title'] . "(" . $v['count'] . ")";
+      //    $node['parentId'] = $v['pid'];
+      //    if (count($arr) === 0) return [$node];
+      //    $nextNode = reset($arr);
+      //    dump($arr);exit;
+      //    if ($nextNode['fullpath'] !== '0-0') {
+      //      $node['children'] = $this->_arrToTree($arr);
+      //    }
+      //    $result[] = $node;
+      //  } else {
+      //    array_shift($arr);
+      //    $node['id'] = $v['id'];
+      //    $node['title'] = $v['title'] . "(" . $v['count'] . ")";
+      //    $node['parentId'] = $v['pid'];
+      //    if (strpos($nextNode['fullpath'], $v['fullpath']) > 0) {
+      //        $node['children'] = $this->_arrToTree($arr);
+      //    }
+      //    return $node; 
+      //  } 
+      //}
     }
   
 }
-
-
