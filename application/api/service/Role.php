@@ -55,9 +55,10 @@ class Role extends Base
         $data['path'] = $parentNode->path . '-' . $parentNode->id;
         $data['pid']  = $parentNode->id;
         $data['name'] = Request::param('addNodeName');
-        $isSave = (new MemberGroup())->save($data);
+        $isSave = (new MemberGroup())->create($data);
         return $isSave;
     }
+
 
     /**
      * 将数组遍历为数组树 
@@ -71,8 +72,8 @@ class Role extends Base
       $result = [];
       foreach($arr as $v) {
         $el = [
-          'id' => $v['id'],
-          'title' => $v['title'] . "(" . $v['count'] . ")",
+          'id'       => $v['id'],
+          'title'    => $v['title'] . "(" . $v['count'] . ")",
           'parentId' => $v['pid'],
           'fullpath' => $v['fullpath']
         ];
@@ -83,7 +84,8 @@ class Role extends Base
             unset($key_path[0]);
             $eval = '$result';
             foreach($key_path as $key) {
-              $eval .= '[$key][\'children\']';
+              (int)$key;
+              $eval .= '[' . $key . '][\'children\']';
             }
               $eval .= '[] = $el;';
               eval($eval);

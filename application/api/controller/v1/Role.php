@@ -43,10 +43,10 @@ class Role extends Base
        (new DtreeAddNode())->gocheck(); 
        //添加子节点
        $result = (new RoleService())->addGroup();
-       //if (!$result->empty()) {
-       //  $id = $result->id;
-       //  return  parent::successMessage(['nodeId'=>$id]);
-       //}
+       if ($result->id) {
+         $id = $result->id;
+         return  parent::successMessage(['style'=>'dtree', 'data'=>['nodeId'=>$id]]);
+       }
     }
 
     
