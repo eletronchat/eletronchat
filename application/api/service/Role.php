@@ -87,31 +87,26 @@ class Role extends Base
               (int)$key;
               $eval .= '[' . $key . '][\'children\']';
             }
-              $eval .= '[] = $el;';
-              eval($eval);
+            //登记节点路径
+            $chil_arr_path[] = array(
+              $eval. '[' . $v['id'] .']',
+              $eval,
+            );
+            $eval .= '[' . $v['id'] .'] = $el;';
+            eval($eval);
+            //清除子节点键名
+            foreach ($chil_arr_path as $arr_path) {
+              dump($arr_path);
+              dump($result);
+                eval('$tmp = ' . $arr_path[0] . ';');
+                eval('unset(' . $arr_path[0] . ');'); 
+                eval($arr_path[1]. '[count(' . $arr_path[1] . ')] = $tmp;');
+            }
         }
       }
+      //去子节点键名
       $result = array_values($result);
-      foreach($result as  $v) {
-          $tmp[] = $this->_cleanArr($v); 
-      }
-      
-    }
-
-
-    /*
-     * 消除数字键名
-     *
-     *
-     *
-     */
-    protected function _cleanArr(&$arr)
-    {
-      if(count($arr) > 4) {
-           $value = array_values($arr);
-           dump($value);exit;
-      }
-        
+      return $result;
     }
   
 }

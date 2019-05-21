@@ -12,7 +12,7 @@ class MemberGroup extends Base
   public function getGroup()
   {
     $result = self::withCount(['memberGroupAccess'=>'count'])
-      ->field(['name'=>'title', 'pid', 'id', 'concat(path,"-",pid)'=>'fullpath'])
+      ->field(['name'=>'title', 'pid', 'id', 'concat(path,"-"d)'=>'fullpath'])
       ->order('fullpath') 
       ->select();
       return $result;
