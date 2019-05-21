@@ -91,7 +91,27 @@ class Role extends Base
               eval($eval);
         }
       }
-      return array_values($result);
+      $result = array_values($result);
+      foreach($result as  $v) {
+          $tmp[] = $this->_cleanArr($v); 
+      }
+      
+    }
+
+
+    /*
+     * 消除数字键名
+     *
+     *
+     *
+     */
+    protected function _cleanArr(&$arr)
+    {
+      if(count($arr) > 4) {
+           $value = array_values($arr);
+           dump($value);exit;
+      }
+        
     }
   
 }
