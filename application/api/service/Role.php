@@ -94,16 +94,15 @@ class Role extends Base
             );
             $eval .= '[' . $v['id'] .'] = $el;';
             eval($eval);
+        }
+      }
             //清除子节点键名
+            $chil_arr_path = array_reverse($chil_arr_path);
             foreach ($chil_arr_path as $arr_path) {
-              dump($arr_path);
-              dump($result);
                 eval('$tmp = ' . $arr_path[0] . ';');
                 eval('unset(' . $arr_path[0] . ');'); 
                 eval($arr_path[1]. '[count(' . $arr_path[1] . ')] = $tmp;');
             }
-        }
-      }
       //去子节点键名
       $result = array_values($result);
       return $result;
