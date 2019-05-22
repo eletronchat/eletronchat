@@ -88,21 +88,25 @@ class Role extends Base
               $eval .= '[' . $key . '][\'children\']';
             }
             //登记节点路径
-            $chil_arr_path[] = array(
-              $eval. '[' . $v['id'] .']',
-              $eval,
-            );
+            $chil_arr_path[] = $eval. '[' . $v['id'] .']';
             $eval .= '[' . $v['id'] .'] = $el;';
             eval($eval);
         }
       }
             //清除子节点键名
-            $chil_arr_path = array_reverse($chil_arr_path);
             foreach ($chil_arr_path as $arr_path) {
-                eval('$tmp = ' . $arr_path[0] . ';');
-                eval('unset(' . $arr_path[0] . ');'); 
-                eval($arr_path[1]. '[count(' . $arr_path[1] . ')] = $tmp;');
+                 $parent_node = explode("['children']", $arr_path);
+                 array_pop($parent_node);
+                 $parent_node = implode("['children']", $parent_node) . "['children']";
+                 eval('$tmp = ' . $arr_path . ';');
+                 eval('unset(' . $arr_path . ');'); 
+                 $move_node = $arr_path. '[count(' . $parent_node . ')]';
+                 eval($move_node . '= $tmp;');
+                 //更新节点登记表集合路径
+                 $pattern = preg_quote($arr_path);
+                 preg_replace();
             }
+      exit;
       //去子节点键名
       $result = array_values($result);
       return $result;
