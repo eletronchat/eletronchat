@@ -100,7 +100,7 @@ class Role extends Base
            array_pop($parent_node);
            $parent_node = implode("['children']", $parent_node) . "['children']";
            eval('$tmp = ' . $arr_path . ';');
-           eval('unset(' . $arr_path . ');'); //剔除出登记表
+           eval('unset(' . $arr_path . ');'); //废支剔除出数组树
            eval('$parent_data = ' . $parent_node . ';');
            //计算新节点编号
            if (isset($parent_node['id'])) {
