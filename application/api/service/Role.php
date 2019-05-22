@@ -93,21 +93,28 @@ class Role extends Base
             eval($eval);
         }
       }
-            //清除子节点键名
-            foreach ($chil_arr_path as $arr_path) {
-                 $parent_node = explode("['children']", $arr_path);
-                 array_pop($parent_node);
-                 $parent_node = implode("['children']", $parent_node) . "['children']";
-                 eval('$tmp = ' . $arr_path . ';');
-                 eval('unset(' . $arr_path . ');'); 
-                 $move_node = $arr_path. '[count(' . $parent_node . ')]';
-                 eval($move_node . '= $tmp;');
-                 //更新节点登记表集合路径
-                 $pattern = preg_quote($arr_path);
-                 preg_replace();
-            }
-      exit;
-      //去子节点键名
+      //更新登记节点路径集
+       foreach ($chil_arr_path as $arr_path) {
+           $arr_path = array_shift($chil_arr_path); //引用循环内变量
+           $parent_node = explode("['children']", $arr_path);
+           array_pop($parent_node);
+           $parent_node = implode("['children']", $parent_node) . "['children']";
+           eval('$tmp = ' . $arr_path . ';');
+           eval('unset(' . $arr_path . ');'); //剔除出登记表
+           eval('$parent_data = ' . $parent_node . ';');
+           //计算新节点编号
+           if (isset($parent_node['id'])) {
+               $node_num["$parent_node"] = isset($node_num["{$parent_node}"]) ? ++$node_num["{$parent_node}"] : count($parent_node);
+           } else {
+               $node_num["{$parent_node}"] = isset($node_num["{$parent_node}"]) ? ++$node_num["{$parent_node}"] : 0;
+           }
+           //拼接为新的节点路径
+           $new_node = $parent_node. '[' . $node_num["{$parent_node}"] . ']';
+           eval($new_node . '= $tmp;');
+           //更新节点登记表集合基路径
+           $pattern = '/' . preg_quote($arr_path) . '/';
+           $chil_arr_path  = preg_replace($pattern, $new_node, $chil_arr_path);
+       }
       $result = array_values($result);
       return $result;
     }
