@@ -22,14 +22,9 @@ class Role extends Base
      */
     public function getAllUser()
     {
-        //查条件
-      if (Request::param('nodeId')) {
-         $id = Request::param('nodeId'); 
-         $map = "id = {$id} or path like %-{$id}-% ";
-      }
         $count           = Member::count();
         $count_no_count  = (new Member())->countNotBelong();
-        $memberGroup     = (new MemberGroup())->getGroup(['map'=>$map]);
+        $memberGroup     = (new MemberGroup())->getGroup();
         $otherNode       = [
             'title'     => "未分组({$count_no_count})",
             'id'        => -1,
@@ -110,11 +105,7 @@ class Role extends Base
            eval('unset(' . $arr_path . ');'); //废支剔除出数组树
            eval('$parent_data = ' . $parent_node . ';');
            //计算新节点编号
-           if (isset($parent_node['id'])) {
-               $node_num["$parent_node"] = isset($node_num["{$parent_node}"]) ? ++$node_num["{$parent_node}"] : count($parent_node);
-           } else {
-               $node_num["{$parent_node}"] = isset($node_num["{$parent_node}"]) ? ++$node_num["{$parent_node}"] : 0;
-           }
+           dump($parent_data);
            //拼接为新的节点路径
            $new_node = $parent_node. '[' . $node_num["{$parent_node}"] . ']';
            eval($new_node . '= $tmp;');
@@ -125,7 +116,6 @@ class Role extends Base
       $result = array_values($result);
       return $result;
     }
-  
-}
 
+}
 

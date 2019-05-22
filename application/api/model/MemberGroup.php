@@ -2,6 +2,7 @@
 namespace app\api\model;
 
 use app\api\model\Member;
+use think\facade\Request;
 
 class MemberGroup extends Base
 {
@@ -11,7 +12,15 @@ class MemberGroup extends Base
    */
   public function getGroup()
   {
+    $request = Request::instance();
     $result = self::withCount(['memberGroupAccess'=>'count'])
+      ->where(function($query) use ($request) {
+        if ($request->param('nodeId')) {
+          $id = $request->param('nodeId');
+          $query->whereOr('id', '=', $id)
+            ->whereOr('path', 'like', "%-$id");
+        }
+      })
       ->field(['name'=>'title', 'pid', 'id', 'concat(path,"-",id)'=>'fullpath'])
       ->order('fullpath') 
       ->select();
