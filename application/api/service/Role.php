@@ -22,9 +22,14 @@ class Role extends Base
      */
     public function getAllUser()
     {
+        //查条件
+      if (Request::param('nodeId')) {
+         $id = Request::param('nodeId'); 
+         $map = "id = {$id} or path like %-{$id}-% ";
+      }
         $count           = Member::count();
         $count_no_count  = (new Member())->countNotBelong();
-        $memberGroup     = (new MemberGroup())->getGroup();
+        $memberGroup     = (new MemberGroup())->getGroup(['map'=>$map]);
         $otherNode       = [
             'title'     => "未分组({$count_no_count})",
             'id'        => -1,
@@ -51,9 +56,11 @@ class Role extends Base
     {
         $data['name'] = Request::param('nodeName');
         $pid = Request::param('parentId');
-        $parentNode =(new MemberGroup())->where("id = {$pid}")->field('id,path')->find();
-        $data['path'] = $parentNode->path . '-' . $parentNode->id;
-        $data['pid']  = $parentNode->id;
+        if ($pid) {
+          $parentNode =(new MemberGroup())->where("id = {$pid}")->field('id,path')->find();
+          $data['path'] = $parentNode->path . '-' . $parentNode->id;
+          $data['pid']  = $parentNode->id;
+        }
         $data['name'] = Request::param('addNodeName');
         $isSave = (new MemberGroup())->create($data);
         return $isSave;
