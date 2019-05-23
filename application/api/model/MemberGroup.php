@@ -20,7 +20,7 @@ class MemberGroup extends Base
           $query->where('path', 'like', "%-$id");
         }
       })
-      ->field(['name'=>'title', 'pid', 'id', 'concat(path,"-",id)'=>'fullpath'])
+      ->field(['name'=>'title', 'pid'=>'parentId', 'id', 'concat(path,"-",id)'=>'fullpath'])
       ->order('fullpath') 
       ->select();
       return $result;

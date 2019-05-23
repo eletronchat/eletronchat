@@ -71,16 +71,18 @@ class Role extends Base
      * @return  array   
      *
      */ 
-    protected function _arrToTree($items, $pid = 'pid')
+    protected function _arrToTree($items, $pid = 'parentId')
     {
          $map  = [];
          $tree = [];   
          foreach ($items as &$it){
            $el = &$it; 
            $el['title'] = $el['title'] . "(" .$el['count']. ")";
-           $el['parentId'] = $el['pid'];
            unset($el['path']);
            unset($el['name']);
+           unset($el['count']);
+           unset($el['pid']);
+           unset($el['fullpath']);
            $map[$it['id']] = &$it; }  //数据的ID名生成新的引用索引树
          foreach ($items as &$it){
            $parent = &$map[$it[$pid]];
