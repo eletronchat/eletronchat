@@ -11,6 +11,7 @@ namespace app\api\controller\v1;
 use app\api\service\Role as RoleService;
 use think\facade\Request;
 use app\api\validate\DtreeAddNode;
+use app\lib\exception\ErrorException;
  
 class Role extends Base
 {
@@ -22,12 +23,12 @@ class Role extends Base
      **/ 
     public function getAllGroup()
     {
-        $data['data'] = (new RoleService())->getAllUser();
-        $data['status'] = [
-          'code'=> 200,
-          'message' => 'success'
-        ];
-        return $data ;
+        $hasdata = (new RoleService())->getAllUser();   
+           throw new ErrorException(); 
+        if (!$hasdata) {
+           throw new ErrorException(); 
+        }
+        return  parent::successMessage(['style'=>'dtree', 'data'=>$hasdata]);
     }
 
 
