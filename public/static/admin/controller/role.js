@@ -45,6 +45,21 @@
             }
           });
         }, 
+        //修改节点
+        editTreeNode: function(treeNode, $div){
+          $.ajax({
+            type: "post",
+            data: treeNode,
+            url: layui.cache.rest_url+"/group",
+            success: function(result){
+              //DTree1.changeTreeNodeEdit(true);// 修改成功
+              //DTree1.changeTreeNodeEdit(result.param); // 修改成功，返回一个JSON对象
+            },
+            error: function(){
+              //DTree1.changeTreeNodeEdit(false);//修改失败
+            }
+          });
+        },
 
        }
     });
