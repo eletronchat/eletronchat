@@ -15,9 +15,9 @@ class MemberGroup extends Base
     $request = Request::instance();
     $result = self::withCount(['memberGroupAccess'=>'count'])
       ->where(function($query) use ($request) {
-        if ($request->param('nodeId')) {
+        if ($request->param('nodeId/d')) {
           $id = $request->param('nodeId');
-          $query->where('path', 'like', "%-$id");
+          $query->where('path', 'like', "%-$id%");
         }
       })
       ->field(['name'=>'title', 'pid'=>'parentId', 'id', 'concat(path,"-",id)'=>'fullpath'])

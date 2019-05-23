@@ -24,15 +24,18 @@ class Role extends Base
     {
         $count           = Member::count();
         $count_no_count  = (new Member())->countNotBelong();
-        $memberGroup     = (new MemberGroup())->getGroup();
+        $MemberGroup     = (new MemberGroup())->getGroup();
         $otherNode       = [
             'title'     => "未分组({$count_no_count})",
             'id'        => -1,
             'parentId'  => 0-1
           ];
-        $subNode = $this->_arrToTree($memberGroup->toArray());
+        $subNode = $this->_arrToTree($MemberGroup->toArray());
         //返回，更新子节点
-        if (Request::get('nodeId')) return $subNode;
+        if (Request::get('nodeId/d') > 0) return $subNode;
+        $subNode[] = $otherNode; 
+        //返回一级节点
+        if (Request::get('nodeId/d') === 0 ) return $subNode;
         $subNode[] = $otherNode; 
         $data[] = [
           'title'    => "所有({$count})",
