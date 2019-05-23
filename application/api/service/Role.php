@@ -31,6 +31,8 @@ class Role extends Base
             'parentId'  => 0-1
           ];
         $subNode = $this->_arrToTree($memberGroup->toArray());
+        //返回，更新子节点
+        if (Request::get('nodeId')) return $subNode;
         $subNode[] = $otherNode; 
         $data[] = [
           'title'    => "所有({$count})",
@@ -69,53 +71,26 @@ class Role extends Base
      * @return  array   
      *
      */ 
-    protected function _arrToTree($arr)
+    protected function _arrToTree($items, $pid = 'pid')
     {
-      $result = [];
-      foreach($arr as $v) {
-        $el = [
-          'id'       => $v['id'],
-          'title'    => $v['title'] . "(" . $v['count'] . ")",
-          'parentId' => $v['pid'],
-          'fullpath' => $v['fullpath']
-        ];
-        if ($v['pid'] === 0) {
-            $result[$el['id']] = $el;
-        } else {
-            $key_path = explode('-', $v['path']);
-            unset($key_path[0]);
-            $eval = '$result';
-            foreach($key_path as $key) {
-              (int)$key;
-              $eval .= '[' . $key . '][\'children\']';
-            }
-            //登记节点路径
-            $chil_arr_path[] = $eval. '[' . $v['id'] .']';
-            $eval .= '[' . $v['id'] .'] = $el;';
-            eval($eval);
-        }
-      }
-      //更新登记节点路径集
-       foreach ($chil_arr_path as $arr_path) {
-           $arr_path = array_shift($chil_arr_path); //引用循环内变量
-           $parent_node = explode("['children']", $arr_path);
-           array_pop($parent_node);
-           $parent_node = implode("['children']", $parent_node) . "['children']";
-           eval('$tmp = ' . $arr_path . ';');
-           eval('unset(' . $arr_path . ');'); //废支剔除出数组树
-           eval('$parent_data = ' . $parent_node . ';');
-           //计算新节点编号
-           dump($parent_data);
-           //拼接为新的节点路径
-           $new_node = $parent_node. '[' . $node_num["{$parent_node}"] . ']';
-           eval($new_node . '= $tmp;');
-           //更新节点登记表集合基路径
-           $pattern = '/' . preg_quote($arr_path) . '/';
-           $chil_arr_path  = preg_replace($pattern, $new_node, $chil_arr_path);
-       }
-      $result = array_values($result);
-      return $result;
+         $map  = [];
+         $tree = [];   
+         foreach ($items as &$it){
+           $el = &$it; 
+           $el['title'] = $el['title'] . "(" .$el['count']. ")";
+           $el['parentId'] = $el['pid'];
+           unset($el['path']);
+           unset($el['name']);
+           $map[$it['id']] = &$it; }  //数据的ID名生成新的引用索引树
+         foreach ($items as &$it){
+           $parent = &$map[$it[$pid]];
+           if($parent) {
+             $parent['children'][] = &$it;
+           }else{
+             $tree[] = &$it;
+           }
+         }
+         return $tree;
     }
-
 }
 

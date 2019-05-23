@@ -17,8 +17,7 @@ class MemberGroup extends Base
       ->where(function($query) use ($request) {
         if ($request->param('nodeId')) {
           $id = $request->param('nodeId');
-          $query->whereOr('id', '=', $id)
-            ->whereOr('path', 'like', "%-$id");
+          $query->where('path', 'like', "%-$id");
         }
       })
       ->field(['name'=>'title', 'pid', 'id', 'concat(path,"-",id)'=>'fullpath'])
