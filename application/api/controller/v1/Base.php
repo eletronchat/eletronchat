@@ -26,7 +26,7 @@ class Base extends Controller
       //默认layui风格
       $data = array_key_exists('data', $mix) ? $mix['data'] : $mix;
       return [
-        'code' => 0,
+        'errorCode' => 0,
         'msg'  => 'sucess',
         'data' => $data
       ]; 
