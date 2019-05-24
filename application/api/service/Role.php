@@ -36,7 +36,6 @@ class Role extends Base
         $subNode[] = $otherNode; 
         //返回一级节点
         if (Request::get('nodeId/d') === 0 ) return $subNode;
-        $subNode[] = $otherNode; 
         $data[] = [
           'title'    => "所有({$count})",
           'id'       => 0,
@@ -54,7 +53,11 @@ class Role extends Base
      */
      public function editGroup()
      {
-           
+        $id = Request::put('nodeId/d');
+        $handle = MemberGroup::get($id);
+        $handle->name = Request::put('editNodeName/s');
+        $isSave = $handle->save();
+        return $isSave;
      }
 
 
@@ -75,6 +78,23 @@ class Role extends Base
         $isSave = (new MemberGroup())->create($data);
         return $isSave;
     }
+
+
+    /**
+      * 删除节点
+      * @access public
+      * @return boolean
+      *
+      */
+    public function delGroup()
+    {
+        $id = Request::delete('nodeId/d');
+        $isDel = MemberGroup::where('id', '=', $id)  
+          ->whereOr('path', 'like', "%-{$id}%") 
+          ->delete();
+        return $isDel;
+    }
+
 
 
     /**

@@ -22,8 +22,8 @@ class Role extends Base
      * @return  json
      **/ 
     public function getAllGroup()
-    {      //验证拦截线
-       (new DtreeNode())->gocheck(); 
+    { 
+        (new DtreeNode())->scene('get')->gocheck(); 
         $hasdata = (new RoleService())->getAllUser();   
         if (!$hasdata) throw new ErrorException(); 
         return  parent::successMessage(['style'=>'dtree', 'data'=>$hasdata]);
@@ -38,8 +38,7 @@ class Role extends Base
      */
     public function addNode()
     {
-       //验证拦截线
-       (new DtreeNode())->gocheck(); 
+      (new DtreeNode())->scene('post')->gocheck(); 
        //添加子节点
        $result = (new RoleService())->addGroup();
        if ($result->id) {
@@ -57,18 +56,29 @@ class Role extends Base
      */
      public function editNode()
      {
-       (new DtreeNode())->gocheck(); 
-       $is_edit = (new RoleServce())->editGroup();
-         dump(Request::param());
+        (new DtreeNode())->scene('put')->gocheck(); 
+        $isSave= (new RoleService())->editGroup();
+        if (!$isSave) throw new ErrorException(['msg' => 'to update data faild']); 
+        return  parent::successMessage();
      }
 
-
+    
     /**
-     * 获取单组用户详情
-     * @id=0 代表所有用户 
-     * @id=-0 代表未分组用户
-     *
+      * 删除节点
+     * @url    /api/v1/group
+     * @http   delele
+     * @return json  
      */
+    public function delNode()
+    {
+        (new DtreeNode())->scene('delete')->gocheck(); 
+        $isDel = (new RoleService)->delGroup();
+        if (!$isDel) {
+            throw new ErrorException('删除失败，内部错误');
+        } else {
+            return parent::successMessage();
+        }
+    }
     
 
 }

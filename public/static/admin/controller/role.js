@@ -48,15 +48,27 @@
             data: treeNode,
             url: layui.cache.rest_url+"/group",
             success: function(result){
-              //DTree1.changeTreeNodeEdit(true);// 修改成功
-              //DTree1.changeTreeNodeEdit(result.param); // 修改成功，返回一个JSON对象
+              DTree.changeTreeNodeEdit(true);
             },
             error: function(){
-              //DTree1.changeTreeNodeEdit(false);//修改失败
+              layer.msg(result.msg);
             }
           });
         },
-
+        //删除节点
+        delTreeNode: function(treeNode, $div){
+          $.ajax({
+            type: "DELETE",
+            data: treeNode,
+            url: layui.cache.rest_url+"/group",
+            success: function(result){
+              DTree.changeTreeNodeDel(true); // 删除成功
+            },
+            error: function(result){
+              layer.msg(result.responseJSON.msg, {icon: 2});
+            }
+          });
+        }
        }
     });
   });

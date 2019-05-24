@@ -12,92 +12,78 @@ use app\lib\exception\ErrorException;
 
 class DtreeNode extends Base
 {
-    protected $rule = [];
-    protected $message = [];
-
-     public function __construct()
-     {
-       switch(Request::method()) {
-           case 'GET' : 
-             $this->get();
-             break;
-           case 'POST' :
-             $this->post();
-             break;
-           case 'PUT' :
-             $this->put();
-             break;
-           case 'DELETE' :
-             $this->delete();
-             break;
-           default:
-             //非法访问，直接K掉 :xxx其实如果开启强制也就没有必要留下这个异常了 
-             throw new ErrorException(
-               [
-                 'errorCode' => 50001,
-                 'msg'       => ' illegally accessed',
-               ] 
-             ); 
-       }
-     }
+  protected $rule = [
+    'parentId'    => 'require|checkNum',
+    'addNodeName' => 'require',
+    'editNodeName' => 'require',
+    'editNodeName' => 'require',
+    'nodeId'       => 'require' //禁止删除
+  ];
+  protected $message = [
+    'parentId.checkNum'  => 'parentId是不小于-1的整数',
+  ];
+  //场景定义
+  protected $scene = [
+    'get'    => ['parentId'], //读取
+    'post'   => ['addNodeName', 'parentId'], //新增
+    'put'    => ['nodeId', 'editNodeName'], //修改
+    'delete' => ['nodeId'] //删除
+  ];
 
 
-    /**
-     *读取验证规则
-     *
-     */
-     protected function get()
-     {
-         $this->rule   = [];
-        $this->message = [];
-     }
+  /**
+   *  get 场景规则修正
+   *  @note get场景涉及全部节点和子节点读取，
+   *  而子节点读取是有参数的要验证，全部节点则不用
+   *  @note nodeId参数涉及到修改和删除场景，而删除
+   *  场景需要禁止删了一些节点，需要附加一个验证条
+   *  件
+   */
+  public function __construct()
+  {
+      if (Request::method() === 'GET' ) {
+        if ( !Request::has('parentId', 'get')) {
+            $this->rule['parentId'] = '';
+        } else {
+            $this->rule['parentId'] = 'require|checkNum';
+        }
+      } 
+      if (Request::method() === 'DELETE') {
+            $this->rule['nodeId'] = 'require|forbiden';
+      } 
+  }
 
 
-    /**
-     * 添加验证规则
-     *
-     */
-     protected function post() 
-     {
-       $this->rule = [
-         'parentId'    => 'require|number',
-         'addNodeName' => 'require'
-       ];
-       $this->message = [
-         'parentId.require'  => '节点parentId必须有',
-         'parentId.number'   => '节点parentId为数字类型',
-         'addNodeName'       => '节点名称addNodeName必须有'
-       ];
-     }
+
+   /**
+    * 验证整数范围不小于-1
+    * @access protected
+    * @return boolean
+    */
+  protected function checkNum($value)
+  {
+    if (!is_numeric($value)) return false;
+    if ($value !== 0 OR $value !== -1) return true;
+    if (!is_int($value)) return false;
+    return true;
+  }
 
 
-    /**
-     * 编辑验证规则
-     *
-     */
-     protected function put()
-     {
-         $this->rule = [
-           'parentId'    => 'require|number',
-           'editNodeName' => 'require'
-         ];
-         $this->message = [
-           'parentId.require'  => '节点parentId必须有',
-           'parentId.number'   => '节点parentId为数字类型',
-           'editNodeName'       => '修改的节点名称editNodeName必须有'
-         ];
-     }
+   /**
+    * 禁止删除根节点和未分组节点
+    * @access protected
+    * @value  numeric    不小于-1的节点id
+    * @return boolean
+    */
+    protected function forbiden($value)
+    {
+      if ($value == -1 || $value == 0) {
+        throw new ErrorException(['msg' => '禁止删除该节点', 'errorCode' => '40310', 'code'=>403.1]);
+      } else {
+        return true;
+      }
+    }
 
-
-     /**
-     * 删除验证规则
-     *
-     */
-     protected function delete()
-     {
-     
-     }
-     
 }
 
 

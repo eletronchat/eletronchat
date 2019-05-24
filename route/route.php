@@ -19,6 +19,8 @@ Route::Group('api/:version', function(){
   Route::post('/group', 'api/:version.Role/addNode');
   //修改节点
   Route::put('/group', 'api/:version.Role/editNode');
+  //删除节点
+  Route::delete('/group', 'api/:version.Role/delNode');
 });
 
 return [
