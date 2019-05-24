@@ -49,6 +49,16 @@ class Role extends Base
 
 
     /**
+     * 修改节点
+     * @return    boolean
+     */
+     public function editGroup()
+     {
+           
+     }
+
+
+    /**
      * 添加客服组
      * @return  boolean    处理结果
      */

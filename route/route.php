@@ -17,6 +17,8 @@ Route::Group('api/:version', function(){
   Route::get('/group', 'api/:version.Role/getAllGroup');
   //客服分类目录树
   Route::post('/group', 'api/:version.Role/addNode');
+  //修改节点
+  Route::put('/group', 'api/:version.Role/editNode');
 });
 
 return [

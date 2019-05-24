@@ -10,7 +10,7 @@ namespace app\api\controller\v1;
 
 use app\api\service\Role as RoleService;
 use think\facade\Request;
-use app\api\validate\DtreeAddNode;
+use app\api\validate\DtreeNode;
 use app\lib\exception\ErrorException;
  
 class Role extends Base
@@ -22,12 +22,10 @@ class Role extends Base
      * @return  json
      **/ 
     public function getAllGroup()
-    {
+    {      //验证拦截线
+       (new DtreeNode())->gocheck(); 
         $hasdata = (new RoleService())->getAllUser();   
-           throw new ErrorException(); 
-        if (!$hasdata) {
-           throw new ErrorException(); 
-        }
+        if (!$hasdata) throw new ErrorException(); 
         return  parent::successMessage(['style'=>'dtree', 'data'=>$hasdata]);
     }
 
@@ -41,7 +39,7 @@ class Role extends Base
     public function addNode()
     {
        //验证拦截线
-       (new DtreeAddNode())->gocheck(); 
+       (new DtreeNode())->gocheck(); 
        //添加子节点
        $result = (new RoleService())->addGroup();
        if ($result->id) {
@@ -51,6 +49,20 @@ class Role extends Base
     }
 
     
+    /**
+     * 修改节点  
+     * @url    /api/v1/group
+     * @http   put 
+     * @return json
+     */
+     public function editNode()
+     {
+       (new DtreeNode())->gocheck(); 
+       $is_edit = (new RoleServce())->editGroup();
+         dump(Request::param());
+     }
+
+
     /**
      * 获取单组用户详情
      * @id=0 代表所有用户 

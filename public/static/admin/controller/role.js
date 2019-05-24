@@ -11,9 +11,9 @@
   //目录树
   layui.use(['layer', 'table', 'dtree'], function(){
     var layer = layui.layer,
-      table = layui.table,
-      dtree = layui.dtree,
-      $ = layui.$;
+        table = layui.table,
+        dtree = layui.dtree,
+        $     = layui.$;
      var DTree = dtree.render({
       elem: "#tree",
       url: layui.cache.rest_url+"/group",
@@ -34,21 +34,17 @@
             success: function(result){
               console.log(result); 
               DTree.changeTreeNodeAdd("refresh"); // 添加成功，局部刷新树
-              //if (result.id) {
-              //  DTree.changeTreeNodeAdd(treeNode.nodeId); // 添加成功，返回ID
-              //  //DTree1.changeTreeNodeAdd(true); // 添加成功
-              //  //DTree1.changeTreeNodeAdd(result.data); // 添加成功，返回一个JSON对象
-              //}
             },
-            error: function(){
-              //DTree1.changeTreeNodeAdd(false); // 添加失败
+            error: function(result){
+              DTree.changeTreeNodeAdd(false); // 添加失败
+              layer.msg(result.msg);
             }
           });
         }, 
         //修改节点
         editTreeNode: function(treeNode, $div){
           $.ajax({
-            type: "post",
+            type: "PUT",
             data: treeNode,
             url: layui.cache.rest_url+"/group",
             success: function(result){
