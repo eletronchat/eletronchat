@@ -88,7 +88,7 @@
  //样式 
   layui.use('jquery', function(){
     var $ = layui.jquery;
-    $('#tree').css("height", $(window).height()*0.75+"px");
+    $('#tree').css("height", $(window).height()*0.65+"px");
   
  });
   
