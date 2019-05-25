@@ -23,7 +23,19 @@
       toolbar: true,
       toolbarStyle: {
         "title": "客服组"
-      },
+     },
+     done: function(data, obj){
+       $("#search_btn").unbind("click");
+       $("#search_btn").click(function(){
+         var value = $("#searchInput").val();
+         if(value){
+           var flag = DTree.searchNode(value); // 内置方法查找节点
+           if (!flag) {layer.msg("该名称节点不存在！", {icon:5});}
+         } else {
+           DTree.menubarMethod().refreshTree(); // 内置方法刷新树
+         }
+       });
+     },
       toolbarFun: {
         //增加节点
         addTreeNode: function(treeNode, $div){
