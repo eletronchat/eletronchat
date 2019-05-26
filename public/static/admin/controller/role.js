@@ -21,6 +21,7 @@
       icon: "2",
       initLevel: "1",
       toolbar: true,
+      skin: "zdy",
       toolbarStyle: {
         "title": "客服组"
      },
