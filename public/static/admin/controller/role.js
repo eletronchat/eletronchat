@@ -81,8 +81,16 @@
             }
           });
         }
-       }
+       },
+       //iframe 加载
+
     });
+    //dtree  单击事件
+    // 绑定节点的单击事件
+dtree.on("node('tree')", function(obj){
+  console.log(obj);
+  
+})
   });
   
  //样式 
