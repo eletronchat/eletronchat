@@ -26,7 +26,7 @@
      },
      done: function(data, obj){
        $("#search_btn").unbind("click");
-       $("#search_btn").click(function(){
+       $("#search_node").click(function(){
          var value = $("#searchInput").val();
          if(value){
            var flag = DTree.searchNode(value); // 内置方法查找节点
