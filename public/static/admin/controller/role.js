@@ -25,6 +25,12 @@
       toolbarStyle: {
         "title": "客服组"
      },
+       useIframe: true,  //启用iframe
+       iframe: {
+         iframeElem: "#dtree_iframe",  // iframe的ID
+         iframeUrl: "http://electronchat.com/static/admin/views/dtree_iframe/index.html",// iframe路由到的地址
+         iframeLoad: "all" 
+       },
      done: function(data, obj){
        $("#search_btn").unbind("click");
        $("#search_node").click(function(){
@@ -87,11 +93,11 @@
 
     });
     //dtree  单击事件
-    // 绑定节点的单击事件
-dtree.on("node('tree')", function(obj){
-  console.log(obj);
-  
-})
+//    // 绑定节点的单击事件
+//dtree.on("node('tree')", function(obj){
+//  console.log(obj);
+//  
+//})
   });
   
  //样式 
