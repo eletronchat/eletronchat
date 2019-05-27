@@ -9,11 +9,17 @@
 
 ;layui.define(function(e) {
   //目录树
-  layui.use(['layer', 'table', 'dtree'], function(){
+  layui.use(['admin', 'form', 'layer', 'table', 'dtree'], function(){
     var layer = layui.layer,
         table = layui.table,
         dtree = layui.dtree,
-        $     = layui.$;
+        $     = layui.$,
+        form  = layui.form,
+        admin = layui.admin,
+        element = layui.element,
+        router = layui.router();
+
+  element.render();
      var DTree = dtree.render({
       elem: "#tree",
       url: layui.cache.rest_url+"/group",
@@ -25,12 +31,6 @@
       toolbarStyle: {
         "title": "客服组"
      },
-       useIframe: true,  //启用iframe
-       iframe: {
-         iframeElem: "#dtree_iframe",  // iframe的ID
-         iframeUrl: "http://electronchat.com/static/admin/views/dtree_iframe/index.html",// iframe路由到的地址
-         iframeLoad: "all" 
-       },
      done: function(data, obj){
        $("#search_btn").unbind("click");
        $("#search_node").click(function(){
@@ -93,22 +93,46 @@
 
     });
     //dtree  单击事件
-//    // 绑定节点的单击事件
-//dtree.on("node('tree')", function(obj){
-//  console.log(obj);
-//  
-//})
+    // 绑定节点的单击事件
+    dtree.on("node('tree')", function(obj){
+        rend_form(); 
+    })
+    //树右侧内容
+    function rend_form() {
+      //添加客服业务
+      var active = {
+        addmember: function(){
+          admin.popup({
+            title: '添加客服'
+            ,shade: 0
+            ,anim: -1
+            ,area: ['690px', '700px']
+            ,id: 'layadmin-layer-skin-test'
+            ,skin: 'layui-anim layui-anim-upbit'
+            ,content: $('#addmember-dom')
+          })
+        }
+      };
+      $('.addmember').on('click', function(){
+        var type = $(this).data('type');
+        active[type] && active[type].call(this);
+      });
+      form.render(); 
+    }
+    
+    rend_form();//上表单渲染
+
   });
   
  //样式 
   layui.use('jquery', function(){
     var $ = layui.jquery;
     $('#tree').css("height", $(window).height()*0.65+"px");
+    $('.layadmin-iframe').css("height", $(window).height()*0.81+"px");
   
  });
   
   
-
   //输入接口
   e("role", {});
 });
