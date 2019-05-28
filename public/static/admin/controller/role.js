@@ -110,6 +110,7 @@
             ,id: 'layadmin-layer-skin-test'
             ,skin: 'layui-anim layui-anim-upbit'
             ,content: $('#addmember-dom')
+            ,btn: ['添加']
           })
         }
       };
