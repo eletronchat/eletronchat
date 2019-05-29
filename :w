@@ -99,25 +99,35 @@
     //触发事件
     $('.addmember').on('click', function(){
       layer.ready(function(){
-        var DTree = dtree.render({
-          elem: "#slTree",
+        //表单树1
+        dtree.render({
+          elem: "#cskTree1",
           method: 'get',
+          checkbar: true,
           url: "/json/case/checkbarTree1.json",
-          icon: "2",
-          accordion:true
+          load:false
         });
-
-        $("#city").on("click",function(){
-          $(this).toggleClass("layui-form-selected");
-          $("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
-          $(".isshow").toggle();
+        //表单dtree多选监听
+        dtree.on("node('cskTree1')", function(obj){
+            console.log(obj);
+            var param = dtree.getCheckbarNodesParam("cskTree1");  // 获取选中数据
+            if(param.length == 0) {
+              layer.msg("请至少选择一个节点");
+            }
+            dtree.reload("cskTree2",{data:param});
+        })
+        //表单树1
+        dtree.render({
+          elem: "#cskTree2",
+          data: [],
+          checkbar:true,
+          response:{treeId:"nodeId",title:"context"},
+          dataFormat:"list"
         });
-
-        dtree.on("node(slTree)", function(obj){
-          $("#input_city").val(obj.param.context);
-          $("#city").toggleClass("layui-form-selected");
-          $("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
-        });
+        //表单dtree多选监听
+        dtree.on("node('cskTree2')", function(obj){
+             console.log(obj);
+        })
       });
       admin.popup({
         title: '添加客服'
@@ -134,12 +144,6 @@
       });
     });
     	// 一般来说，权限数据是异步传递过来的
-        //表单dtree多选监听
-        dtree.on("node('cskTree1')", function(obj){
-            var param = dtree.getCheckbarNodesParam("cskTree1");  // 获取选中数据
-            console.log(param);
-            dtree.reload("cskTree2",{data:param});
-        })
     form.render();//上表渲染
   });
   

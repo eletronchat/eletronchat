@@ -19,7 +19,7 @@
   <script>
   layui.config({
     base: '__LAYUI_ADMIN__/' //指定 layuiAdmin 项目路径
-    ,version: true
+    ,version: new Date().getTime()
     ,app_name: '{:config('app.app_name')}'
     ,rest_url: '/api/v1' //REST api接口基地址
   }).use('index', function(){
