@@ -102,7 +102,7 @@
         var DTree = dtree.render({
           elem: "#slTree",
           method: 'get',
-          url: "/json/case/checkbarTree1.json",
+          url: layui.cache.rest_url+"/group",
           icon: "2",
           accordion:true
         });
@@ -112,7 +112,6 @@
           $("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
           $(".isshow").toggle();
         });
-
         dtree.on("node(slTree)", function(obj){
           $("#input_city").val(obj.param.context);
           $("#city").toggleClass("layui-form-selected");
@@ -123,23 +122,23 @@
         title: '添加客服'
         ,shade: 0
         ,anim: -1
-        ,area: ['700px', '700px']
+        ,area: ['700px', '500px']
         ,id: 'layadmin-layer-skin-test'
         ,skin: 'layui-anim layui-anim-upbit'
         ,content: $('#addmember-dom')
-        ,btn: ['添加']
         ,btnAlign: 'c'
         ,scrollbar: false
         ,tips: [1, '#c00']
       });
+      //添加客服表单
+      form.on('select(select-role)', function(data){
+        console.log(data);
+      });
+      //初始化角色值
+      admin.req(layui.cache.rest_url+"/group" , {}, function (data) {
+        console.log(data)
+      }, 'GET');
     });
-    	// 一般来说，权限数据是异步传递过来的
-        //表单dtree多选监听
-        dtree.on("node('cskTree1')", function(obj){
-            var param = dtree.getCheckbarNodesParam("cskTree1");  // 获取选中数据
-            console.log(param);
-            dtree.reload("cskTree2",{data:param});
-        })
     form.render();//上表渲染
   });
   
