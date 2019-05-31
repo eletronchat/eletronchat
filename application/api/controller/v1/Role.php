@@ -81,5 +81,22 @@ class Role extends Base
     }
     
 
+    /**
+    *  获取权限角色列表
+    *
+    */
+    public function getRoleList()
+    {
+        $hasData = (new RoleService())->getRoleList();
+        if($hasData->isEmpty()) {
+          throw new ErrorException([
+            'msg'=>'没有权限角色分组，请先添加',
+            'code' => 500
+          ]);
+        } else {
+            return parent::successMessage($hasData);
+        }
+    }
+ 
 }
 

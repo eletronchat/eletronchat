@@ -23,6 +23,11 @@ Route::Group('api/:version', function(){
   Route::delete('/group', 'api/:version.Role/delNode');
 });
 
+//权限管理
+Route::Group('api/:version', function(){
+  //权限角色列表
+  Route::get('/roleList', 'api/:version.Role/getRoleList');
+});
 return [
 
 ];

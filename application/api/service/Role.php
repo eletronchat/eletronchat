@@ -13,6 +13,7 @@ use app\api\service\Base;
 use think\Db;
 use think\facade\Request;
 use app\api\model\MemberGroup;
+use app\api\model\AuthGroup;
 
 class Role extends Base
 {
@@ -126,6 +127,21 @@ class Role extends Base
            }
          }
          return $tree;
+    }
+
+
+    /**
+     * 获取权限角色列表
+     *
+     */
+    public function getRoleList()
+    {
+      $hasData = (new AuthGroup())
+        ->field('id,title')
+        ->append(['parentId'])
+        ->order('id desc')
+        ->select();
+      return $hasData;
     }
 }
 

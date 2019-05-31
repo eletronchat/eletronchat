@@ -135,7 +135,7 @@
         console.log(data);
       });
       //初始化角色值
-      admin.req(layui.cache.rest_url+"/group" , {}, function (data) {
+      admin.req(layui.cache.rest_url+"/roleList" , {}, function (data) {
         console.log(data)
       }, 'GET');
     });
