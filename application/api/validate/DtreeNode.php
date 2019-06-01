@@ -1,6 +1,6 @@
 <?php 
 /**
- * Dtree   客服管理api验证规则 
+ * 用户组管理场景验证器
  * @author wuchuheng 
  * @email  wuchuheng@163.com
  * @date   2019-05-17
@@ -12,22 +12,42 @@ use app\lib\exception\ErrorException;
 
 class DtreeNode extends Base
 {
-  protected $rule = [
-    'parentId'    => 'require|checkNum',
-    'addNodeName' => 'require',
+  protected $rule   = [
+    'parentId'     => 'require|checkNum',
+    'addNodeName'  => 'require',
     'editNodeName' => 'require',
     'editNodeName' => 'require',
-    'nodeId'       => 'require' //禁止删除
+    'nodeId'       => 'require', //禁止删除
+    'account'      => 'require|between:6,20',
+		'passwd'       => 'require|between:6,20',
+		'repasswd'     => 'require|confirm:passwd',
+	  'username'     => 'require|isChinese',
+	  'nick_name'    => 'require',
+	  'phone'        => 'mobile',
+		'email'        => 'email',
+		'select_role'  => 'integer',
   ];
-  protected $message = [
-    'parentId.checkNum'  => 'parentId是不小于-1的整数',
+
+  protected $message       = [
+    'parentId.checkNum'   => 'parentId是不小于-1的整数',
+		'account.between'     => '请输入6-20位的账户名',
+  	'passwd.between'      => '请输入6-20位的密码名',
+  	'checkpasswd.confirm' => '2次密码不一致',
+		'username.require'    => '请输入用户名',
+		'username.isChinese'  => '请输中文姓名',
+		'nick_name'           => '请输昵称',
+		'phone'               => '请输正确的手机号码',
+		'email'               => '请输入正确的邮箱',
+		'select_role'         => '请选择权限角色',
   ];
+
   //场景定义
-  protected $scene = [
-    'get'    => ['parentId'], //读取
-    'post'   => ['addNodeName', 'parentId'], //新增
-    'put'    => ['nodeId', 'editNodeName'], //修改
-    'delete' => ['nodeId'] //删除
+  protected $scene  = [
+    'get'          => ['parentId'], //读取组
+    'post'         => ['addNodeName', 'parentId'], //新增组
+    'put'          => ['nodeId', 'editNodeName'], //修改组
+    'delete'       => ['nodeId'], //删除组
+    'addMember'    => ['account', 'passwd', 'repasswd', 'username', 'nick_name', 'phone', 'email', 'select_role'] //添加用户
   ];
 
 
@@ -83,6 +103,20 @@ class DtreeNode extends Base
         return true;
       }
     }
+ 	
+		/**
+			*  是否汉字
+			*  @return boolean
+			*/
+			protected function isChinese($value)
+			{		
+					if (preg_match("/^[A-Za-z0-9]+$/", $value ))
+							return true;
+					else 
+							return false;
+								
+			}
+
 
 }
 

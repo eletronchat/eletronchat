@@ -97,6 +97,20 @@ class Role extends Base
             return parent::successMessage($hasData);
         }
     }
+
+
+    /**
+     *  添加客服
+     *
+     * @http  post 
+     * @url   api/v1/.Role/member
+     * @return json
+     */
+     public function addMember()
+     {
+        (new DtreeNode())->scene('addMember')->gocheck(); 
+        dump(Request::param());
+     }
  
 }
 

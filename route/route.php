@@ -27,7 +27,23 @@ Route::Group('api/:version', function(){
 Route::Group('api/:version', function(){
   //权限角色列表
   Route::get('/roleList', 'api/:version.Role/getRoleList');
+  //添加客服
+  Route::post('/member', 'api/:version.Role/addMember');
 });
+
+//获取token
+Route::Group('api/:version', function(){
+  //获取token
+  Route::get('/token', 'api/:version.Token/getToken');
+  //获取验证码
+  Route::get('/verCode', 'api/:version.Token/getVerCode');
+  //登出
+  Route::put('/logout', 'api/:version.Token/logout');
+});
+
+//上传
+Route::post('api/:version/upload', 'api/:version.');
+
 return [
 
 ];
