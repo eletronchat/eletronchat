@@ -21,7 +21,7 @@ class Role extends Base
      * @http    get
      * @return  json
      **/ 
-    public function getAllGroup()
+    public function getAllGroup($addMember = '')
     { 
         (new DtreeNode())->scene('get')->gocheck(); 
         $hasdata = (new RoleService())->getAllUser();   
@@ -111,6 +111,7 @@ class Role extends Base
         (new DtreeNode())->scene('addMember')->gocheck(); 
         dump(Request::param());
      }
+
  
 }
 
