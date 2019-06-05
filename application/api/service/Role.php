@@ -19,9 +19,11 @@ class Role extends Base
 {
     /**
      * 获取客服组数据树
+     * :xxx  请求的数据用于添加客服分类用的:xxx这设计不符合rest规范,先将就下
      * @return obj
+     * 
      */
-    public function getAllUser()
+    public function getAllUser($forAddMember = '')
     {
         $count           = Member::count();
         $count_no_count  = (new Member())->countNotBelong();
@@ -32,6 +34,8 @@ class Role extends Base
             'parentId'  => 0-1
           ];
         $subNode = $this->_arrToTree($MemberGroup->toArray());
+        //用于添加会员的表单用
+        if (Request::get('addMember'))  return $subNode;
         //返回，更新子节点
         if (Request::get('nodeId/d') > 0) return $subNode;
         $subNode[] = $otherNode; 

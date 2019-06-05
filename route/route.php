@@ -15,8 +15,6 @@ Route::get('api/:version/moduleList', 'api/:version.module/list');
 Route::Group('api/:version', function(){
   //客服分类目录树
   Route::get('/group', 'api/:version.Role/getAllGroup');
- //获取分类目录，用于新增用户表单
-  Route::get('/group/:addMember', 'api/:version.Role/getAllGroup');
   //客服分类目录树
   Route::post('/group', 'api/:version.Role/addNode');
   //修改节点

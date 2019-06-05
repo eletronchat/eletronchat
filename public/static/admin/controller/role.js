@@ -156,7 +156,7 @@
       var DTree = dtree.render({
         elem: "#slTree",
         method: 'get',
-        url: layui.cache.rest_url+"/group",
+        url: layui.cache.rest_url+"/group?addMember=1",
         icon: "2",
         accordion:true
       });
