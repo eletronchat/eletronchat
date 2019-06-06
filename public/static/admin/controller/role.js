@@ -107,7 +107,7 @@
         title: '添加客服'
         ,shade: 0
         ,anim: -1
-        ,area: ['700px', '550px']
+        ,area: ['700px', '600px']
         ,id: 'layadmin-layer-skin-test'
         ,skin: 'layui-anim layui-anim-upbit'
         ,content: $('#addmember-dom')
