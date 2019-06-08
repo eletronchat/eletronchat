@@ -143,7 +143,7 @@
       done: function(res){
         for(var i in res.data) {
           var html = "<option value='"+res.data[i].id+"'>"+res.data[i].title+"</option>";
-          $('select[name=select_role]').append(html);
+          $('select[name=group_id]').append(html);
         }
         form.render('select', 'add-member-form');//添加客服表单select渲染
       }
@@ -166,6 +166,7 @@
         $(".isshow").toggle();
       });
       dtree.on("node(slTree)", function(obj){
+        layui.cache.select_node_id = obj.param.nodeId;
         $("#input_city").val(obj.param.context);
         $("#city").toggleClass("layui-form-selected");
         $("#test").toggleClass("layui-show layui-anim layui-anim-upbit");
@@ -182,14 +183,19 @@
         /^[\S]{6,12}$/
         ,'密码必须6到12位，且不能出现空格'
       ]
+      ,repasswd: function (value){
+         if($('input[name=passwd]').val() !== value) {
+             return '2次密码输入不一样';
+         }
+      }
       ,username: function(value){
         if(value.length < 2){
           return '请输入全名';
         }
       }
       ,phone: function(value){
-        if(value.length != 11){
-          // :xxx 您的手机号少（多）写了n位
+        if(!value.match(/^1[3-9][0-9]\d{8}$/)){
+          console.log(value);
           return '请输入11位手机号码';
         }
       } 
@@ -205,13 +211,18 @@
       var memberData = data.field;
       if ( memberData.file !== '' ) 
           memberData.file = $('#preview').attr('src');
-    admin.req({
-      url: layui.cache.rest_url + "/member",
-      type: 'POST',
-      data: memberData,
-      done: function(res){
-          console.log(res);
-      }
+          delete memberData.group;
+          memberData.member_group_id = layui.cache.select_node_id;
+          $.ajax({
+            url: layui.cache.rest_url + "/members",
+            type: 'POST',
+            data: memberData,
+            success: function(res){
+              console.log(res);
+            },
+            error: function(res){
+                 layer.msg(res.responseJSON.msg,  {icon: 5});
+            }
     });
       return false;
     });

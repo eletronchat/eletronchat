@@ -5,15 +5,6 @@ use think\Db;
 
 class Member extends Base
 {
-    /**
-     * 客服管理目录树节点名称
-     *
-     */
-    public function getTitleAttr($value, $data)
-    {
-    
-    }
-
 
     /**
      * 获取客服目录树的未分组数据
@@ -26,5 +17,26 @@ class Member extends Base
       }) ->count();
       return $count;
     }
+
+
+    /**
+     * 关联权限分组模型
+     *
+     */
+     public function authGroupAccess()
+     {
+         return $this->hasOne('AuthGroupAccess', 'group_id', 'uid');
+     }
+
+
+     /**
+     * 关联成员成员分组模型
+     *
+     */
+     public function memberGroupAccess()
+     {
+         return $this->hasOne('MemberGroupAccess', 'member_group_id', 'uid');
+     }
+
 }
 

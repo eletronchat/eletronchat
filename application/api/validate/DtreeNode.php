@@ -8,6 +8,7 @@
 namespace app\api\validate;
 
 use think\facade\Request;
+use app\api\model\Member;
 use app\lib\exception\ErrorException;
 
 class DtreeNode extends Base
@@ -16,39 +17,42 @@ class DtreeNode extends Base
     'parentId'     => 'require|checkNum',
     'addNodeName'  => 'require',
     'editNodeName' => 'require',
-    'editNodeName' => 'require',
     'nodeId'       => 'require', //禁止删除
-    'account'      => 'require|length:6,20',
+    'account'      => 'require|length:6,20|accountIsUnique', 
 		'passwd'       => 'require|length:6,20',
 		'repasswd'     => 'require|confirm:passwd',
 	  'username'     => 'require|isChinese',
-	  'nick_name'    => 'require',
+	  'nick_name'    => 'require|nickNameIsUnique',
 	  'phone'        => 'mobile',
 		'email'        => 'email',
+		'select_role'  => 'integer',
 		'select_role'  => 'integer',
   ];
 
   protected $message       = [
     'parentId.checkNum'   => 'parentId是不小于-1的整数',
-		'account.lenght'     => '请输入6-20位的账户名',
-  	'passwd.length'      => '请输入6-20位的密码',
+		'account.lenght'      => '请输入6-20位的账户名',
+		'account.accountIsUnique'    => '该帐号已存在，请换个别的',
+  	'passwd.length'       => '请输入6-20位的密码',
   	'checkpasswd.confirm' => '2次密码不一致',
 		'username.require'    => '请输入用户名',
 		'username.isChinese'  => '请输中文姓名',
-		'nick_name'           => '请输昵称',
-		'phone'               => '请输正确的手机号码',
-		'email'               => '请输入正确的邮箱',
+    'nick_name.require'   => '请输昵称',
+    'nick_name.nickNameIsUnique'  => '该昵称已存在，请换个别的',
+		'phone.mobile'        => '请输正确的手机号码',
+		'email.email'         => '请输入正确的邮箱',
 		'select_role'         => '请选择权限角色',
     'account.require'     => '请添加账号account'
   ];
 
   //场景定义
   protected $scene  = [
-    'get'          => ['parentId'], //读取组
-    'post'         => ['addNodeName', 'parentId'], //新增组
-    'put'          => ['nodeId', 'editNodeName'], //修改组
-    'delete'       => ['nodeId'], //删除组
-    'addMember'    => ['account', 'passwd', 'repasswd', 'username', 'nick_name', 'phone', 'email', 'select_role'] //添加用户
+     'get'          => ['parentId'], //读取组
+     'post'         => ['addNodeName', 'parentId'], //新增组
+     'put'          => ['nodeId', 'editNodeName'], //修改组
+     'delete'       => ['nodeId'], //删除组
+     'addMember'    => ['account', 'passwd', 'repasswd', 'username', 'nick_name', 'phone', 'email', 'select_role'], //添加用户
+     'getMemberByAccount' => ['account']  //以帐户名查询查询单个用户信息
   ];
 
 
@@ -115,10 +119,29 @@ class DtreeNode extends Base
 							return true;
 					else 
 							return false;
-								
 			}
 
 
+     /**
+       * account 是否唯一
+       * return  boolean
+       */
+       protected function accountIsUnique($value, $data) 
+       {
+           $hasData = (new Member())->where('account', '=', $value)->find();          if ($hasData) return false;
+           else return true;
+       }
+
+       
+     /**
+       * nick_name 是否唯一
+       * return  boolean
+       */
+       protected function nickNameIsUnique($value, $data) 
+       {
+           $hasData = (new Member())->where('nick_name', '=', $value)->find();          if ($hasData) return false;
+           else return true;
+       }
 }
 
 

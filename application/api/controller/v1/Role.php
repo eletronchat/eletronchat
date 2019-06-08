@@ -107,15 +107,12 @@ class Role extends Base
      *  添加客服
      *
      * @http  post 
-     * @url   api/v1/.Role/member
+     * @url   api/v1/.Role/members
      * @return json
      */
      public function addMember()
      {
-        (new DtreeNode())->scene('addMember')->gocheck(); 
-        dump(Request::param());
+         (new DtreeNode())->scene('addMember')->gocheck(); 
+         $isAdd = (new RoleService())->addMember();
      }
-
- 
 }
-

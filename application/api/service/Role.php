@@ -101,7 +101,6 @@ class Role extends Base
     }
 
 
-
     /**
      * 将数组遍历为数组树 
      * @arr     有子节点的目录树
@@ -147,5 +146,28 @@ class Role extends Base
         ->select();
       return $hasData;
     }
+
+
+  /**
+   *  添加新的成员
+   *  @return   boolean 
+   */
+   public function addMember()
+   {
+       $req_data = Request::post();
+       $User = new Member();
+       $User->username                             = $req_data['username'];
+       $User->img_id = 1;
+       $User->passwd                               = $req_data['passwd'];
+       $User->account                              = $req_data['account'];
+       $User->receives                             = $req_data['receives'];
+       $User->nick_name                            = $req_data['nick_name'];
+       $User->email                                = $req_data['email'];
+       $User->phone                                = $req_data['phone'];
+       $User->phone                                = $req_data['phone'];
+       $User->authGroupAccess()->group_id          = $req_data['group_id'];
+       $User->memberGroupAccess()->member_group_id = $req_data['member_group_id'];
+       $isSave = $User->save();
+   }
 }
 

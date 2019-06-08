@@ -65,7 +65,7 @@
                           </div>
                           <div class="layui-form-mid"></div>
                           <div class="layui-input-inline" style="width:260px">
-                            <input class="layui-input"placeholder="输入客服姓名/昵称/帐号/手机号" name="keyword" value="" >
+                            <input class="layui-input" placeholder="输入客服姓名/昵称/帐号/手机号" name="keyword" value="" >
                             <i class="layui-icon dtree-icon" id="search_node">&#xe615;</i>
                           </div>
                           <div class="layui-input-inline" style="width: 100px;">
@@ -117,13 +117,13 @@
 	<div class="layui-form-item">
 		<label class="layui-form-label">确认密码</label>
 		<div class="layui-input-inline">
-			<input type="password" name="repasswd" lay-verify="required" placeholder="6-20字,含字母数字或符号" autocomplete="off" class="layui-input">
+			<input type="password" name="repasswd" lay-verify="required|repasswd" placeholder="6-20字,含字母数字或符号" autocomplete="off" class="layui-input">
 		</div>
 	</div>
 	<div class="layui-form-item">
 		<label class="layui-form-label">接待量</label>
 		<div class="layui-input-inline">
-			<input type="password" name="receives"  placeholder="同时接待的人数，默认10人" autocomplete="off" class="layui-input">
+			<input type="text" name="receives"  placeholder="同时接待的人数，默认10人" autocomplete="off" class="layui-input">
 		</div>
 	</div>
 	<div class="layui-form-item">
@@ -161,14 +161,14 @@
 		<div class="layui-inline">
 			<label class="layui-form-label">邮&nbsp;箱</label>
 			<div class="layui-input-inline">
-				<input type="text" name="email" lay-verify="required" placeholder="请输入邮箱地址" autocomplete="off" class="layui-input">
+				<input type="text" name="email" lay-verify="required|email" placeholder="请输入邮箱地址" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 		<div class="layui-inline">
 			<label class="layui-form-label">选择角色</label>
 			<div class="layui-input-inline">
         <!--:xxx input不显示下拉框已选中的选项的-->
-				<select name="select_role" lay-verify="required"  lay-filter="select_role">
+				<select name="group_id" lay-verify="required"  lay-filter="select_role">
            <option value=""></option>
 				</select>
 			</div>
