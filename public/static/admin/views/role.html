@@ -98,7 +98,7 @@
   </div>
 </div>
 <!--添加客服, start-->
-<form id='addmember-dom' class="layui-form layui-form-pane" style="display:none" lay-filter="add-member-form">
+<form autocomplete="off" id='addmember-dom' class="layui-form layui-form-pane" style="display:none" lay-filter="add-member-form">
   <div style="position: absolute;top: 10%;left:67%;">
 					<img id="preview" src="/static/admin/images/robot_portrait.png" style="max-width: 79px">
         </div>
@@ -111,19 +111,19 @@
 	<div class="layui-form-item">
 		<label class="layui-form-label">密&nbsp;码</label>
 		<div class="layui-input-inline">
-			<input type="password" name="passwd" lay-verify="required|passwd" placeholder="6-20字,含字母数字或符号" autocomplete="off" class="layui-input">
+			<input autocomplete="off" type="password" name="passwd" lay-verify="required|passwd" placeholder="6-20字,含字母数字或符号" autocomplete="off" class="layui-input">
 		</div>
 	</div>
 	<div class="layui-form-item">
 		<label class="layui-form-label">确认密码</label>
 		<div class="layui-input-inline">
-			<input type="password" name="repasswd" lay-verify="required|repasswd" placeholder="6-20字,含字母数字或符号" autocomplete="off" class="layui-input">
+			<input autocomplete="new-password" type="password" name="repasswd" lay-verify="required|repasswd" placeholder="6-20字,含字母数字或符号" autocomplete="off" class="layui-input">
 		</div>
 	</div>
 	<div class="layui-form-item">
 		<label class="layui-form-label">接待量</label>
 		<div class="layui-input-inline">
-			<input type="text" name="receives"  placeholder="同时接待的人数，默认10人" autocomplete="off" class="layui-input">
+			<input type="text" name="receives" lay-verify="receives" placeholder="同时接待的人数，默认10人" autocomplete="off" class="layui-input">
 		</div>
 	</div>
 	<div class="layui-form-item">

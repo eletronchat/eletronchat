@@ -21,6 +21,9 @@
         router = layui.router();
   element.render();
      var DTree = dtree.render({
+       headers: {
+         "access_token": layui.data('layuiAdmin').access_token
+       },
       elem: "#tree",
       url: layui.cache.rest_url+"/group",
       method: "get",
@@ -47,6 +50,9 @@
         //增加节点
         addTreeNode: function(treeNode, $div){
           $.ajax({
+            headers: {
+              "access_token": layui.data('layuiAdmin').access_token
+            },
             type: "post",
             data: treeNode,
             url: layui.cache.rest_url+"/group",
@@ -63,6 +69,9 @@
         //修改节点
         editTreeNode: function(treeNode, $div){
           $.ajax({
+            headers: {
+              "access_token": layui.data('layuiAdmin').access_token
+            },
             type: "PUT",
             data: treeNode,
             url: layui.cache.rest_url+"/group",
@@ -77,6 +86,9 @@
         //删除节点
         delTreeNode: function(treeNode, $div){
           $.ajax({
+            headers: {
+              "access_token": layui.data('layuiAdmin').access_token
+            },
             type: "DELETE",
             data: treeNode,
             url: layui.cache.rest_url+"/group",
@@ -103,7 +115,7 @@
     //****** 添加客服表单处理 s******//
     //表单弹出层
     $('.addmember').on('click', function(){
-      admin.popup({
+       layui.cache.addmember = admin.popup({
         title: '添加客服'
         ,shade: 0
         ,anim: -1
@@ -154,6 +166,9 @@
     });
     layer.ready(function(){
       var DTree = dtree.render({
+       headers: {
+         "access_token": layui.data('layuiAdmin').access_token
+       },
         elem: "#slTree",
         method: 'get',
         url: layui.cache.rest_url+"/group?addMember=1",
@@ -193,6 +208,17 @@
           return '请输入全名';
         }
       }
+      ,receives: function(value) {
+        if (value.length > 0) {
+           if (!$.isNumeric(value)) {
+             return '接待量必需是整数';
+           }else if(parseInt(value) !== parseFloat(value)) {
+             console.log(value);
+             return '接待量必需是整数';
+           }
+        } 
+
+      }
       ,phone: function(value){
         if(!value.match(/^1[3-9][0-9]\d{8}$/)){
           console.log(value);
@@ -210,19 +236,24 @@
     form.on('submit(add-member-form)', function(data){
       var memberData = data.field;
       if ( memberData.file !== '' ) 
-          memberData.file = $('#preview').attr('src');
-          delete memberData.group;
-          memberData.member_group_id = layui.cache.select_node_id;
-          $.ajax({
-            url: layui.cache.rest_url + "/members",
-            type: 'POST',
-            data: memberData,
-            success: function(res){
-              console.log(res);
-            },
-            error: function(res){
-                 layer.msg(res.responseJSON.msg,  {icon: 5});
-            }
+         memberData.file = $('#preview').attr('src');
+         delete memberData.group;
+         memberData.member_group_id = layui.cache.select_node_id;
+         $.ajax({
+           headers: {
+             "access_token": layui.data('layuiAdmin').access_token
+           },
+           url: layui.cache.rest_url + "/members",
+           type: 'POST',
+           data: memberData,
+           success: function(res){
+             layer.msg(res.msg, {icon:1});
+             layer.close(layui.cache.addmember);  
+             $('#addmember-dom')[0].reset();
+           },
+           error: function(res){
+                layer.msg(res.responseJSON.msg,  {icon: 5});
+           }
     });
       return false;
     });

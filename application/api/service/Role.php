@@ -14,6 +14,8 @@ use think\Db;
 use think\facade\Request;
 use app\api\model\MemberGroup;
 use app\api\model\AuthGroup;
+use think\facade\Config;
+use think\facade\Env;
 
 class Role extends Base
 {
@@ -154,20 +156,65 @@ class Role extends Base
    */
    public function addMember()
    {
-       $req_data = Request::post();
-       $User = new Member();
-       $User->username                             = $req_data['username'];
-       $User->img_id = 1;
-       $User->passwd                               = $req_data['passwd'];
-       $User->account                              = $req_data['account'];
-       $User->receives                             = $req_data['receives'];
-       $User->nick_name                            = $req_data['nick_name'];
-       $User->email                                = $req_data['email'];
-       $User->phone                                = $req_data['phone'];
-       $User->phone                                = $req_data['phone'];
-       $User->authGroupAccess()->group_id          = $req_data['group_id'];
-       $User->memberGroupAccess()->member_group_id = $req_data['member_group_id'];
-       $isSave = $User->save();
+     Db::startTrans();
+     try {
+       $img_id = $this->_saveIcon();
+       if (Request::has('receives', 'post') && Request::post('receives/d') > 0 ) {
+         $receives = Request::post('receives/d');
+       } else {
+         $result = (Db::name('config')->where('name', '=', 'receives')->field('value')->find());
+         $receives = (int)$result['value'];
+       }
+       $uid = Db::name('member')->insertGetId([
+         'username'    => Request::post('username/s'),
+           'passwd'    => md5(Request::post('passwd/s')),
+           'img_id'    => $img_id,
+           'account'   => Request::post('account/s'),
+           'receives'  => $receives,
+           'nick_name' => Request::post('nick_name/s'),
+           'email'     => Request::post('email/s'),
+           'phone'     => Request::post('phone/s'),
+         ]);
+       Db::name('authGroupAccess')->insert([
+         'uid'      => $uid,
+         'group_id' => Request::post('group_id/d')
+       ]);
+       Db::name('memberGroupAccess')->insert([
+         'uid'             => $uid,
+         'member_group_id' => Request::post('member_group_id/d')
+       ]);
+       Db::commit();
+     } catch (\Exception $e) {
+       return false;
+       Db::rollback();
+     }
+     return true;
    }
+
+
+    /**
+     *  保存头像图片
+     *  @return  $img_id  int  相册id 
+     */
+     protected function _saveIcon()
+     {
+       if (Request::has('file', 'post') && !base64_decode(Request::post('file/s'))) {
+         $result = Db::name('config')->where('name','=', 'member_img_id')->field('value')->find();
+         return (int)$result['value'];
+       }
+       $base64 = Request::post('file/s');
+       preg_match("/^data:image\/(\w+);base64,/", $base64, $file_type);
+       $base64 = substr($base64, strpos($base64, ',') + 1);
+       $file_type = $file_type[1];
+       $source = base64_decode($base64);
+       $dir = Env::get('root_path') . "public/static/img/" . date('Y-m-d');
+       if (!is_dir($dir)) mkdir($dir, 0766, true);
+       $filename = $dir . '/' . uniqid() . '.' . $file_type;
+       file_put_contents($filename, $source);
+       $filename = str_replace(Env::get('root_path'), '/', $filename);
+       $img_id = Db::name('image')->insertGetId(['url'=>$filename, 'from'=>1]);
+       return $img_id;
+     }
+ 
 }
 

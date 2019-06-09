@@ -113,6 +113,13 @@ class Role extends Base
      public function addMember()
      {
          (new DtreeNode())->scene('addMember')->gocheck(); 
-         $isAdd = (new RoleService())->addMember();
+         $is_add = (new RoleService())->addMember();
+         if (!$is_add) {
+           throw new ErrorException([
+             'msg'=>'添加失败，服务器内部错误，请联系管理员',
+           ]);
+         } else {
+             return parent::successMessage();
+         }
      }
 }
