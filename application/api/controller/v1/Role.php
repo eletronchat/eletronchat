@@ -107,7 +107,7 @@ class Role extends Base
      *  添加客服
      *
      * @http  post 
-     * @url   api/v1/.Role/members
+     * @url   api/v1/members
      * @return json
      */
      public function addMember()
@@ -121,5 +121,17 @@ class Role extends Base
          } else {
              return parent::successMessage();
          }
+     }
+
+
+    /**
+     * 读取成员
+     * @http   get 
+     * @url    api/v1/members
+     * @return json   成员信息 
+     */
+     public function getMembers()
+     {
+         $hasData = (new RoleService())->getMembers();
      }
 }

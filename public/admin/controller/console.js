@@ -165,7 +165,7 @@
         layui.table);
         e.render({
             elem: "#LAY-index-topSearch",
-            url: "./json/console/top-search.js",
+            url: "/json/console/top-search.js",
             page: !0,
             cols: [[{
                 type: "numbers",
@@ -189,7 +189,7 @@
         }),
         e.render({
             elem: "#LAY-index-topCard",
-            url: "./json/console/top-card.js",
+            url: "/json/console/top-card.js",
             page: !0,
             cellMinWidth: 120,
             cols: [[{

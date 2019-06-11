@@ -166,14 +166,15 @@ class Role extends Base
          $receives = (int)$result['value'];
        }
        $uid = Db::name('member')->insertGetId([
-         'username'    => Request::post('username/s'),
-           'passwd'    => md5(Request::post('passwd/s')),
-           'img_id'    => $img_id,
-           'account'   => Request::post('account/s'),
-           'receives'  => $receives,
-           'nick_name' => Request::post('nick_name/s'),
-           'email'     => Request::post('email/s'),
-           'phone'     => Request::post('phone/s'),
+         'username'      => Request::post('username/s'),
+           'passwd'      => md5(Request::post('passwd/s')),
+           'img_id'      => $img_id,
+           'account'     => Request::post('account/s'),
+           'receives'    => $receives,
+           'nick_name'   => Request::post('nick_name/s'),
+           'email'       => Request::post('email/s'),
+           'phone'       => Request::post('phone/s'),
+           'create_time' => time()
          ]);
        Db::name('authGroupAccess')->insert([
          'uid'      => $uid,
@@ -215,6 +216,16 @@ class Role extends Base
        $img_id = Db::name('image')->insertGetId(['url'=>$filename, 'from'=>1]);
        return $img_id;
      }
- 
+
+
+    /**
+     * 获取成员
+     *
+     */
+     public function getMembers()
+     {
+        dump(1);
+     }
+      
 }
 

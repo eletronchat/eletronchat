@@ -27,8 +27,10 @@ Route::Group('api/:version', function(){
 Route::Group('api/:version', function(){
   //权限角色列表
   Route::get('/roleList', 'api/:version.Role/getRoleList');
-  //添加客服
+  //添加成员
   Route::post('/members', 'api/:version.Role/addMember');
+  //读取成员
+  Route::get('/members', 'api/:version.Role/getMembers');
 });
 
 //获取token

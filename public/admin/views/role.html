@@ -60,7 +60,8 @@
                       <div class="layui-form-item">
                         <div class="layui-inline">
                           <div class="layui-input-inline" style="width:100px">
-                            <select name="top" lay-filter"select-group">
+                            <select name="top" lay-filter"select-group" >
+                              <option value='1'> 选择角色</option>
                             </select>  
                           </div>
                           <div class="layui-form-mid"></div>
@@ -83,10 +84,22 @@
                       </button>
                     </div>
               </div>
-
+              <!--数据表格, start-->
+              <div class="layui-card-body">
+                 <table id="table" lay-filter="table" class="layui-table"></table>
+                 <script type="text/html" id="tableImg">
+                   <img src="{{d.img}}" style="max-width:25px"/>
+                 </script>
+                 <script type="text/html" id="table_bar">
+                   <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                 </script>
+                 <script type="text/html" id="checkboxTpl">
+                    <input type="checkbox" name="is_lock" value="{{d.is_lock}}" title="锁定" lay-filter="lockDemo" {{ d.is_lock == 1 ? 'checked' : '' }}>
+                 </script>
+              </div>
+              <!--数据表格, end-->
             </div>
-
-
           </div>
         </div>
         </div>
@@ -100,7 +113,7 @@
 <!--添加客服, start-->
 <form autocomplete="off" id='addmember-dom' class="layui-form layui-form-pane" style="display:none" lay-filter="add-member-form">
   <div style="position: absolute;top: 10%;left:67%;">
-					<img id="preview" src="/static/admin/images/robot_portrait.png" style="max-width: 79px">
+					<img id="preview" src="./images/robot_portrait.png" style="max-width: 79px">
         </div>
 	<div class="layui-form-item">
 		<label class="layui-form-label">账&nbsp;号</label>

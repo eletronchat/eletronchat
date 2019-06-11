@@ -248,8 +248,9 @@
            data: memberData,
            success: function(res){
              layer.msg(res.msg, {icon:1});
-             layer.close(layui.cache.addmember);  
-             $('#addmember-dom')[0].reset();
+             layer.close(layui.cache.addmember); //关闭表单
+             $('#addmember-dom')[0].reset(); //重置表单
+             //重载左边目录树
            },
            error: function(res){
                 layer.msg(res.responseJSON.msg,  {icon: 5});
@@ -258,6 +259,33 @@
       return false;
     });
     //************ 添加客服表单 e ***********//
+
+        //************ 数据表格,            start      *********//
+        var            table                =          table.render({
+        elem:          '#table'
+        ,height:       312
+        //,url:        layui.cache.rest_url +          //数据接口
+        ,url:          '/json/table.json'
+        ,page:         true                 //开启分页
+        ,response:     {
+        statusName:    'errorCode'
+        }
+        ,cols:         [[                   //表头
+        {type:'checkbox', fixed: 'left'}
+        ,{field:        'id',                title:     'ID',          width:60,   sort: true}
+        ,{field:       'account',           title:     '帐号',        width:100}
+        ,{field:       'nick_name',         title:     '昵称',        width:80}
+        ,{field:       'username',          title:     '姓名',        width:80,}
+        ,{field:       'phone',             title:     '手机',        width:120}
+        ,{field:       'email',             title:     '邮箱',        width:150}
+        ,{field:       'receives',          title:     '接待量',      width:80, sort: true}
+        ,{field:       'img',               title:     '头像',        width:60,    templet: "#tableImg"}
+        ,{field:       'role',              title:     '角色',        width:      60}
+        ,{field:'is_lock', title:'是否锁定', width:110, templet: '#checkboxTpl', unresize: true}
+        ,{fixed: 'right', title:'操作', toolbar: '#table_bar', width:120}
+        ]]
+        });
+        //************ 数据表格,            end        **********//
     
 
   });

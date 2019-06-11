@@ -117,10 +117,12 @@ class DtreeNode extends Base
 			*/
 			protected function isChinese($value)
 			{		
-					if (preg_match("/^[A-Za-z0-9]+$/", $value ))
+        return true;
+        if (preg_match("/^[\u4e00-\u9fa5]+$/", $value )) {
 							return true;
-					else 
+        } else {
 							return false;
+        }
 			}
 
 
