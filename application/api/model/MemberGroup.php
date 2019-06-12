@@ -34,6 +34,6 @@ class MemberGroup extends Base
   {
       return $this->hasMany('MemberGroupAccess', 'member_group_id', 'id');
   }
-  
+
 }
 

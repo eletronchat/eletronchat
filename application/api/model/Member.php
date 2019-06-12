@@ -25,7 +25,8 @@ class Member extends Base
      */
      public function authGroupAccess()
      {
-         return $this->hasOne('AuthGroupAccess', 'group_id', 'uid');
+         //return $this->hasOne('AuthGroupAccess', 'uid', 'uid');
+        return $this->hasManyThrough('MemberGroupAccess', 'MemberGroup', 'uid', 'member_group_id', 'id');
      }
 
 
@@ -35,8 +36,30 @@ class Member extends Base
      */
      public function memberGroupAccess()
      {
-         return $this->hasOne('MemberGroupAccess', 'member_group_id', 'uid');
+         return $this->belongsTo('MemberGroupAccess', 'uid', 'uid');
      }
 
+
+     /**
+     * 关联相册
+     * 
+     */
+    public function img()
+    {
+      return $this->hasOne('Image', 'id', 'img_id');
+    }
+
+
+    /**
+      *  关联角色中间表
+      *
+      *
+      */
+    public function authAccess()
+    {
+        return $this->hasOne('AuthGroupAccess', 'uid', 'uid');
+    }
+   
+     
 }
 

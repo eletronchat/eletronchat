@@ -16,6 +16,8 @@ use app\api\model\MemberGroup;
 use app\api\model\AuthGroup;
 use think\facade\Config;
 use think\facade\Env;
+use MemberGroupAccess;
+  
 
 class Role extends Base
 {
@@ -212,7 +214,7 @@ class Role extends Base
        if (!is_dir($dir)) mkdir($dir, 0766, true);
        $filename = $dir . '/' . uniqid() . '.' . $file_type;
        file_put_contents($filename, $source);
-       $filename = str_replace(Env::get('root_path'), '/', $filename);
+       $filename = str_replace(Env::get('root_path') . 'public', '', $filename);
        $img_id = Db::name('image')->insertGetId(['url'=>$filename, 'from'=>1]);
        return $img_id;
      }
@@ -224,7 +226,30 @@ class Role extends Base
      */
      public function getMembers()
      {
-        dump(1);
+
+       $limit  = Request::get('limit/d');
+       $result = Member::with([
+         'authAccess.authGroup',
+         'memberGroupAccess.MemberGroup',
+         'img'
+       ])
+       ->append(['auth_access'])
+       ->paginate($limit);
+       $count = $result->total();
+      foreach($result as $member) {
+        $tmp['uid']         = $member->uid;
+        $tmp['account']     = $member->account;
+        $tmp['nick_name']   = $member->nick_name;
+        $tmp['email']       = $member->email;
+        $tmp['phone']       = $member->phone;
+        $tmp['receives']    = $member->receives;
+        $tmp['username']    = $member->username;
+        $tmp['img']         = $member->img->url;
+        $tmp['role']        = $member->auth_access->auth_group->title;
+        $tmp['is_lock']     = $member->is_lock;
+        $collection[] = $tmp;
+      }
+      return (object) array('count'=>$count, 'data'=>$collection);
      }
       
 }

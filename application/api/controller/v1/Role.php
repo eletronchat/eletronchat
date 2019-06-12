@@ -132,6 +132,19 @@ class Role extends Base
      */
      public function getMembers()
      {
+        (new DtreeNode())->scene('getMembers')->gocheck();
          $hasData = (new RoleService())->getMembers();
+        if (!$hasData) {
+           throw new ErrorException([
+             'msg'=>'查询数据失败，内部错误',
+           ]);
+        } else {
+          return json([
+            'msg'       => 'sucess',
+            'data'      => $hasData->data,
+            'count'     => $hasData->count,
+            'errorCode' => 0
+          ]); 
+        }
      }
 }

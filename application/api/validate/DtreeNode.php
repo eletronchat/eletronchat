@@ -28,9 +28,13 @@ class DtreeNode extends Base
 		'email'        => 'email',
 		'select_role'  => 'integer',
 		'select_role'  => 'integer',
+    'limit'        => 'require|number|gt0',
+    'page'        => 'require|number|gt0'
   ];
 
   protected $message       = [
+    'limit.gt0' => '分页条数大于0',
+    'page.gt0' => '分页数大于0',
     'receives.checkReceives'     => '接待量必需是整数',
     'parentId.checkNum'          => 'parentId是不小于-1的整数',
 		'account.lenght'             => '请输入6-20位的账户名',
@@ -54,7 +58,8 @@ class DtreeNode extends Base
      'put'          => ['nodeId', 'editNodeName'], //修改组
      'delete'       => ['nodeId'], //删除组
      'addMember'    => ['account', 'passwd', 'repasswd', 'username', 'nick_name', 'receives', 'phone', 'email', 'select_role'], //添加用户
-     'getMemberByAccount' => ['account']  //以帐户名查询查询单个用户信息
+     'getMemberByAccount' => ['account'],  //以帐户名查询查询单个用户信息
+     'getMembers'  => ['limit', 'page']  //获取成员场景
   ];
 
 
@@ -160,6 +165,16 @@ class DtreeNode extends Base
              return true;
          }
      }
+
+
+     /**
+     *  大于0
+     */
+    public function gt0($value, $data)
+    {
+      if ($value <= 0 ) return false;
+      else return  true;
+    }
 }
 
 
