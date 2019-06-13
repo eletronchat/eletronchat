@@ -250,7 +250,9 @@
              layer.msg(res.msg, {icon:1});
              layer.close(layui.cache.addmember); //关闭表单
              $('#addmember-dom')[0].reset(); //重置表单
-             //重载左边目录树
+             //:xxx 重载左边目录树
+             //重载数据表
+            table.reload("table");
            },
            error: function(res){
                 layer.msg(res.responseJSON.msg,  {icon: 5});
@@ -266,7 +268,6 @@
           ,headers: {
             "access_token": layui.data('layuiAdmin').access_token
           }
-        ,height:       312
         ,url:          layui.cache.rest_url + '/members'
         ,page:         true                 //开启分页
         ,response:     {
@@ -274,39 +275,60 @@
         }
         ,cols:         [[                   //表头
         {type:'checkbox', fixed: 'left'}
-        ,{field:        'uid',                title:     'ID',          width:60,   sort: true}
-        ,{field:       'account',           title:     '帐号',        width:100}
-        ,{field:       'username',          title:     '姓名',        width:90,}
+        ,{field:        'uid',                title:     'ID',          width:60,   sort: true, align: 'center'}
+        ,{field:       'account',           title:     '帐号',        width:100,align: 'center' }
+        ,{field:       'username',          title:     '姓名',        width:90,align: 'center'}
         ,{field:       'img',               title:     '头像',        width:60,    templet: "#tableImg"}
-        ,{field:       'phone',             title:     '手机',        width:120}
-        ,{field:       'email',             title:     '邮箱',        width:150}
+        ,{field:       'phone',             title:     '手机',        width:120,align: 'center'}
+        ,{field:       'email',             title:     '邮箱',        width:150,align: 'center'}
         ,{field:       'receives',          title:     '接待量',      width:80, sort: true, align: 'center'}
-        ,{field:       'nick_name',         title:     '昵称',        width:90}
-        ,{field:       'role',              title:     '角色',        width:      0}
-        ,{field:'is_lock', title:'是否锁定', width:110, templet: '#checkboxTpl', unresize: true}
-        ,{fixed: 'right', title:'操作', toolbar: '#table_bar', width:120}
+        ,{field:       'nick_name',         title:     '昵称',        width:90,align: 'center'}
+        ,{field:       'role',              title:     '角色',        width:      100,align: 'center'}
+        ,{field:'is_lock', title:'是否锁定', width:110, templet: '#checkboxTpl', unresize: true,align: 'center'}
+        ,{fixed: 'right', title:'操作', toolbar: '#table_bar', width:120,align: 'center'}
         ]]
         });
          //是否锁定事件 
          form.on('checkbox(is_lock)', function(obj){
            var is_lock = obj.elem.checked ? 1 : 0;
              $.ajax({
-                 headers: { "access_token": layui.data('layuiAdmin').access_token },
-                 url: layui.cache.rest_url+"/members/" + this.value,
-                 data: {is_lock:is_lock},
-                 type: "PUT",
-                 success: function(res) {
-                     console.log(res);
-                 },
-                 error: function(res){
-             
+                headers: { "access_token": layui.data('layuiAdmin').access_token },
+                url: layui.cache.rest_url+"/members/" + this.value,
+                data: {is_lock:is_lock},
+                type: "PUT",
+                success: function(res) {
+                    if (res.errorCode == 0) {
+                      layer.msg(res.msg, {icon: 1});
+                    } else {
+                      layer.msg(res.msg, {icon: 2});
+                    }
+                },
+                error: function(res){
+                  layer.msg('响应失败', {icon: 5});
                 }
              });
            
          });
 
-        //************ 数据表格,            end        **********//
-    
+    //************ 数据表格,            end        **********//
+    //************ 搜索, start ******************************/
+      $.ajax({
+        url: layui.cache.rest_url + "/roleList",
+        headers: { "access_token": layui.data('layuiAdmin').access_token },
+        type: 'GET',
+        success: function(res) {
+            if (res.errorCode == 0) {
+                for(i in res.data) {
+                   $('select[name=top]').append("<option value='"+res.data[i].id+"'>"+res.data[i].title+"</option>");
+                }
+               form.render('select'); 
+            }
+        },
+        error: function(res) {
+            console.log(res);
+        }
+      });
+    //************ 搜索, end ******************************/
 
   });
   

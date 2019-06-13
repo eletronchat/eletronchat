@@ -29,7 +29,8 @@ class DtreeNode extends Base
 		'select_role'  => 'integer',
 		'select_role'  => 'integer',
     'limit'        => 'require|number|gt0',
-    'page'        => 'require|number|gt0'
+    'page'        => 'require|number|gt0',
+    'uid'         => 'require|number|gt0|hasUid'
   ];
 
   protected $message       = [
@@ -48,7 +49,9 @@ class DtreeNode extends Base
 		'phone.mobile'               => '请输正确的手机号码',
 		'email.email'                => '请输入正确的邮箱',
 		'select_role'                => '请选择权限角色',
-    'account.require'            => '请添加账号account'
+    'account.require'            => '请添加账号account',
+    'uid.gt0'                    => '用户uid必须大于0',
+    'uid.hasUid'                 => '没有这个成员'
   ];
 
   //场景定义
@@ -59,7 +62,8 @@ class DtreeNode extends Base
      'delete'       => ['nodeId'], //删除组
      'addMember'    => ['account', 'passwd', 'repasswd', 'username', 'nick_name', 'receives', 'phone', 'email', 'select_role'], //添加用户
      'getMemberByAccount' => ['account'],  //以帐户名查询查询单个用户信息
-     'getMembers'  => ['limit', 'page']  //获取成员场景
+     'getMembers'  => ['limit', 'page'],  //获取成员场景
+     'editMember'  => ['uid']
   ];
 
 
@@ -174,6 +178,21 @@ class DtreeNode extends Base
     {
       if ($value <= 0 ) return false;
       else return  true;
+    }
+
+
+    /**
+     * uid是否在member表
+     * @return   booleean
+     */
+    public function hasUid($value, $data)
+    {
+      $hasData = Member::where('uid', '=', $value)->field('uid')->find();
+      if (!$hasData) {
+          return false;
+      } else {
+          return true;
+      }
     }
 }
 

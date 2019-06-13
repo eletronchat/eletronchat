@@ -252,6 +252,45 @@ class Role extends Base
       }
       return (object) array('count'=>$count, 'data'=>$collection);
      }
+
+
+     /**
+     *  修改成员
+     *  @param  int   $uid    用户id
+     *  @return boolean
+     *
+     */
+     public function editMember(int $uid)
+     {
+       // 启动事务
+       Db::startTrans();
+       try {
+         $member = Member::where('uid', '=', $uid)->find();
+         //更新用户组
+         if (Request::has('member_group_id')){
+           $member->memberGroupAccess->member_group_id = Request::param('member_group_id/d', 'put');
+           $member->memberGroupAccess
+             ->allowField(true)
+             ->save(Request::param());
+         } 
+         //更新权限组
+         if (Request::has('group_id')) {
+           $member->authGroupAccess->group_id = Request::param('group_id/d', 'put');
+           $member->memberGroupAccess
+             ->allowField(true)
+             ->save(Request::param());
+         }
+         //更新成员信息
+         $member->save(Request::param());
+         Db::commit();
+       } catch (\Exception $e) {
+         // 回滚事务
+         Db::rollback();
+         return false;
+       }
+       return true;
+
+     }
       
 }
 

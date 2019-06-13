@@ -31,6 +31,8 @@ Route::Group('api/:version', function(){
   Route::post('/members', 'api/:version.Role/addMember');
   //读取成员
   Route::get('/members', 'api/:version.Role/getMembers');
+  //修改成员
+  Route::put('/members/:uid', 'api/:version.Role/editMember');
 });
 
 //获取token

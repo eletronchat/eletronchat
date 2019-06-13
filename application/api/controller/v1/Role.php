@@ -139,12 +139,27 @@ class Role extends Base
              'msg'=>'查询数据失败，内部错误',
            ]);
         } else {
-          return json([
-            'msg'       => 'sucess',
-            'data'      => $hasData->data,
-            'count'     => $hasData->count,
-            'errorCode' => 0
-          ]); 
+          return parent::successMessage(['data'=>$hasData->data, 'count'=>$hasData->count]);
         }
      }
+
+
+     /**
+     * 修改成员
+     * @http    put 
+     * @param   init    $uid    用户id
+     * @url     api/v1/member/:id
+     * @return  json    修改结果 
+     */
+    public function editMember($uid)
+    {
+        (new DtreeNode())->scene('editMember')->gocheck();
+        $is_edit = (new RoleService())->editMember($uid);
+        if ($is_edit) {
+            return parent::successMessage();
+        } else {
+           throw new ErrorException(['msg'=>'内部错误修改失败']);
+        }
+        
+    }
 }

@@ -25,11 +25,17 @@ class Base extends Controller
       }
       //默认layui风格
       $data = array_key_exists('data', $mix) ? $mix['data'] : $mix;
-      return [
+      $result =  [
         'errorCode' => 0,
         'msg'  => 'sucess',
         'data' => $data
       ]; 
+      //自定义添加自定义字段
+      if (array_key_exists('data', $mix)) {
+          unset($mix['data']);
+          $result = array_merge($mix, $result);
+      }
+      return $result;
     }
 }
 

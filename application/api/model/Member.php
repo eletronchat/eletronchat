@@ -25,7 +25,6 @@ class Member extends Base
      */
      public function authGroupAccess()
      {
-         //return $this->hasOne('AuthGroupAccess', 'uid', 'uid');
         return $this->hasManyThrough('MemberGroupAccess', 'MemberGroup', 'uid', 'member_group_id', 'id');
      }
 
@@ -52,7 +51,6 @@ class Member extends Base
 
     /**
       *  关联角色中间表
-      *
       *
       */
     public function authAccess()
