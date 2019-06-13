@@ -222,7 +222,7 @@ class Role extends Base
 
     /**
      * 获取成员
-     *
+     * :xxx  要采用远程关联并返回collection数据集
      */
      public function getMembers()
      {
@@ -234,6 +234,7 @@ class Role extends Base
          'img'
        ])
        ->append(['auth_access'])
+       ->order('uid desc')
        ->paginate($limit);
        $count = $result->total();
       foreach($result as $member) {

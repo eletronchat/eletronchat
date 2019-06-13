@@ -280,13 +280,31 @@
         ,{field:       'img',               title:     '头像',        width:60,    templet: "#tableImg"}
         ,{field:       'phone',             title:     '手机',        width:120}
         ,{field:       'email',             title:     '邮箱',        width:150}
-        ,{field:       'receives',          title:     '接待量',      width:80, sort: true}
+        ,{field:       'receives',          title:     '接待量',      width:80, sort: true, align: 'center'}
         ,{field:       'nick_name',         title:     '昵称',        width:90}
-        ,{field:       'role',              title:     '角色',        width:      80}
+        ,{field:       'role',              title:     '角色',        width:      0}
         ,{field:'is_lock', title:'是否锁定', width:110, templet: '#checkboxTpl', unresize: true}
         ,{fixed: 'right', title:'操作', toolbar: '#table_bar', width:120}
         ]]
         });
+         //是否锁定事件 
+         form.on('checkbox(is_lock)', function(obj){
+           var is_lock = obj.elem.checked ? 1 : 0;
+             $.ajax({
+                 headers: { "access_token": layui.data('layuiAdmin').access_token },
+                 url: layui.cache.rest_url+"/members/" + this.value,
+                 data: {is_lock:is_lock},
+                 type: "PUT",
+                 success: function(res) {
+                     console.log(res);
+                 },
+                 error: function(res){
+             
+                }
+             });
+           
+         });
+
         //************ 数据表格,            end        **********//
     
 
