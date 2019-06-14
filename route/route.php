@@ -33,6 +33,8 @@ Route::Group('api/:version', function(){
   Route::get('/members', 'api/:version.Role/getMembers');
   //修改成员
   Route::put('/members/:uid', 'api/:version.Role/editMember');
+  //删除成员
+  Route::delete('/members/:uid', 'api/:version.Role/del');
 });
 
 //获取token

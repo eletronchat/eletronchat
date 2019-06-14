@@ -1,6 +1,8 @@
 <?php
 namespace app\index\controller;
 
+use app\api\model\Member;
+
 class Index
 {
     public function index()
@@ -9,7 +11,7 @@ class Index
       return '<html>
       <body>
           <p>登录</p>
-          <p>登录</p>
+          <p>后台</p>
           <p><a href="/admin">adminin</a></p>
       </body>
 </html>';

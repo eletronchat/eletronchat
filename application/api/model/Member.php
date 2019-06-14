@@ -5,7 +5,6 @@ use think\Db;
 
 class Member extends Base
 {
-
     /**
      * 获取客服目录树的未分组数据
      * @return obj  collection
@@ -43,7 +42,7 @@ class Member extends Base
      * 关联相册
      * 
      */
-    public function img()
+    public function image()
     {
       return $this->hasOne('Image', 'id', 'img_id');
     }

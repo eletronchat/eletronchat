@@ -63,7 +63,8 @@ class DtreeNode extends Base
      'addMember'    => ['account', 'passwd', 'repasswd', 'username', 'nick_name', 'receives', 'phone', 'email', 'select_role'], //添加用户
      'getMemberByAccount' => ['account'],  //以帐户名查询查询单个用户信息
      'getMembers'  => ['limit', 'page'],  //获取成员场景
-     'editMember'  => ['uid']
+     'editMember'  => ['uid'], 
+     'delMember'   => ['uid'] //删除成员
   ];
 
 

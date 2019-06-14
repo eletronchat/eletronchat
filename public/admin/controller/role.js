@@ -263,23 +263,19 @@
     //************ 添加客服表单 e ***********//
 
         //************ 数据表格,            start      *********//
-        var            table                =          table.render({
-        elem:          '#table'
-          ,headers: {
-            "access_token": layui.data('layuiAdmin').access_token
-          }
-        ,url:          layui.cache.rest_url + '/members'
-        ,page:         true                 //开启分页
-        ,response:     {
-        statusName:    'errorCode'
-        }
+        table.render({
+        elem:'#table'
+        ,headers: {"access_token": layui.data('layuiAdmin').access_token}
+        ,url: layui.cache.rest_url + '/members'
+        ,page: true                 //开启分页
+        ,response:{ statusName:'errorCode' }
         ,cols:         [[                   //表头
         {type:'checkbox', fixed: 'left'}
         ,{field:        'uid',                title:     'ID',          width:60,   sort: true, align: 'center'}
         ,{field:       'account',           title:     '帐号',        width:100,align: 'center' }
         ,{field:       'username',          title:     '姓名',        width:90,align: 'center'}
         ,{field:       'img',               title:     '头像',        width:60,    templet: "#tableImg"}
-        ,{field:       'phone',             title:     '手机',        width:120,align: 'center'}
+        ,{field:       'phone',             title:     '<i class="layui-icon">&#xe642;</i>手机',        width:120,align: 'center'}
         ,{field:       'email',             title:     '邮箱',        width:150,align: 'center'}
         ,{field:       'receives',          title:     '接待量',      width:80, sort: true, align: 'center'}
         ,{field:       'nick_name',         title:     '昵称',        width:90,align: 'center'}
@@ -288,28 +284,62 @@
         ,{fixed: 'right', title:'操作', toolbar: '#table_bar', width:120,align: 'center'}
         ]]
         });
-         //是否锁定事件 
-         form.on('checkbox(is_lock)', function(obj){
-           var is_lock = obj.elem.checked ? 1 : 0;
-             $.ajax({
-                headers: { "access_token": layui.data('layuiAdmin').access_token },
-                url: layui.cache.rest_url+"/members/" + this.value,
-                data: {is_lock:is_lock},
-                type: "PUT",
-                success: function(res) {
-                    if (res.errorCode == 0) {
-                      layer.msg(res.msg, {icon: 1});
-                    } else {
-                      layer.msg(res.msg, {icon: 2});
-                    }
-                },
-                error: function(res){
-                  layer.msg('响应失败', {icon: 5});
-                }
-             });
-           
-         });
+        //是否锁定事件 
+        form.on('checkbox(is_lock)', function(obj){
+          var is_lock = obj.elem.checked ? 1 : 0;
+            $.ajax({
+               headers: { "access_token": layui.data('layuiAdmin').access_token },
+               url: layui.cache.rest_url+"/members/" + this.value,
+               data: {is_lock:is_lock},
+               type: "PUT",
+               success: function(res) {
+                   if (res.errorCode == 0) {
+                     layer.msg(res.msg, {icon: 1});
+                   } else {
+                     layer.msg(res.msg, {icon: 2});
+                   }
+               },
+               error: function(res){
+                 layer.msg('响应失败', {icon: 5});
+               }
+            });
+          
+        });
+    //删除和修改
+    layui.table.on('tool(table)', function(obj){
+      if (obj.event === 'del') {
+        layer.confirm('真的删除行么', function(index){
+          layer.close(index);
+          $.ajax({
+            headers: {"access_token": layui.data('layuiAdmin').access_token},
+            url: layui.cache.rest_url + "/members/" + obj.data.uid,
+            type: "DELETE",
+            success: function(res) {
+               if (res.errorCode == 0) obj.del(); 
+               else layer.msg(res.msg, {icon:2});
+            },
+            error: function() {
+                layer.msg('请求失败', {icon:2});
+            }
+          }); 
+        });
+      }
+      if (obj.event === 'edit') {
 
+       layui.cache.addmember = admin.popup({
+        title: '添加客服'
+        ,shade: 0
+        ,anim: -1
+        ,area: ['700px', '600px']
+        ,id: 'layadmin-layer-skin-test'
+        ,skin: 'layui-anim layui-anim-upbit'
+        ,content: $('#eidt-member-dom')
+        ,btnAlign: 'c'
+        ,scrollbar: false
+        ,tips: [1, '#c00']
+      });
+      }
+    })
     //************ 数据表格,            end        **********//
     //************ 搜索, start ******************************/
       $.ajax({

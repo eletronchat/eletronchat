@@ -162,4 +162,22 @@ class Role extends Base
         }
         
     }
+
+
+    /**
+    * 删除成员
+    * @http   DELETE
+    * @param  $uid    init    用户id 
+    * @return json
+    */
+     public function del(int $uid) 
+     {
+        (new DtreeNode())->scene('delMember')->gocheck();
+        $is_del = (new RoleService())->delMember($uid);
+        if ($is_del) {
+            return parent::successMessage();
+        } else {
+            new ErrorException(['msg'=>'服务器内部错误，数据删除失败']);
+        }
+     }
 }

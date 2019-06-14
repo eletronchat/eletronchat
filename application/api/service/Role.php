@@ -17,6 +17,7 @@ use app\api\model\AuthGroup;
 use think\facade\Config;
 use think\facade\Env;
 use MemberGroupAccess;
+use app\api\model\Image;
   
 
 class Role extends Base
@@ -231,7 +232,7 @@ class Role extends Base
        $result = Member::with([
          'authAccess.authGroup',
          'memberGroupAccess.MemberGroup',
-         'img'
+         'image'
        ])
        ->append(['auth_access'])
        ->order('uid desc')
@@ -245,7 +246,7 @@ class Role extends Base
         $tmp['phone']       = $member->phone;
         $tmp['receives']    = $member->receives;
         $tmp['username']    = $member->username;
-        $tmp['img']         = $member->img->url;
+        $tmp['img']         = $member->image->url;
         $tmp['role']        = $member->auth_access->auth_group->title;
         $tmp['is_lock']     = $member->is_lock;
         $collection[] = $tmp;
@@ -292,5 +293,30 @@ class Role extends Base
 
      }
       
+
+    
+    /**
+     * 删除成员
+     * @param    $uid    init    成员uid 
+     * @return   boolean
+     */
+     public function delMember(int $uid) 
+		 {
+          Db::startTrans();
+          try{
+         	  $user = Member::where('uid', '=', $uid)->find();
+						Db::name('member_group_access')->where('uid','=', $user->uid)->delete();
+						Db::name('auth_group_access')->where('uid','=', $user->uid)->delete();
+            $Image = Image::get($user->img_id);
+					  $Image->delete_time=date('Y-m-d H:i:s', time());
+						$Image->save();
+            $user->delete();
+            Db::commit();
+          } catch(\Exception $e){
+            Db::rollback();
+            return false;
+          }
+ 					return true;
+     }
 }
 
