@@ -28,14 +28,14 @@ class DtreeNode extends Base
 		'email'        => 'email',
 		'select_role'  => 'integer',
 		'select_role'  => 'integer',
-    'limit'        => 'require|number|gt0',
-    'page'        => 'require|number|gt0',
-    'uid'         => 'require|number|gt0|hasUid'
+    'limit'        => 'has_limit',
+    'page'        => 'has_page',
+    'uid'         => 'require|number|gt0|hasUid',
   ];
 
   protected $message       = [
-    'limit.gt0' => '分页条数大于0',
-    'page.gt0' => '分页数大于0',
+    'limit.has_limit' => 'page和limit必须大于0的数字',
+    'page.has_page' => 'page和limit为大于0的数字',
     'receives.checkReceives'     => '接待量必需是整数',
     'parentId.checkNum'          => 'parentId是不小于-1的整数',
 		'account.lenght'             => '请输入6-20位的账户名',
@@ -51,7 +51,8 @@ class DtreeNode extends Base
 		'select_role'                => '请选择权限角色',
     'account.require'            => '请添加账号account',
     'uid.gt0'                    => '用户uid必须大于0',
-    'uid.hasUid'                 => '没有这个成员'
+    'uid.hasUid'                 => '没有这个成员',
+    ''
   ];
 
   //场景定义
@@ -63,11 +64,12 @@ class DtreeNode extends Base
      'addMember'    => ['account', 'passwd', 'repasswd', 'username', 'nick_name', 'receives', 'phone', 'email', 'select_role'], //添加用户
      'getMemberByAccount' => ['account'],  //以帐户名查询查询单个用户信息
      'getMembers'  => ['limit', 'page'],  //获取成员场景
-     'editMember'  => ['uid'], 
-     'delMember'   => ['uid'] //删除成员
+     'editMember'  => ['uid'],  //:xxx 修改成员有多个字段要对应验证
+     'delMember'   => ['uid'], //删除成员
+     'getRoleList' => ['page', 'limit'] //获取权限
   ];
 
-
+    
   /**
    *  get 场景规则修正
    *  @note get场景涉及全部节点和子节点读取，
@@ -194,6 +196,38 @@ class DtreeNode extends Base
       } else {
           return true;
       }
+    }
+
+
+    /**
+    * 分页数字验证
+    *
+    */
+    public function has_page($value, $data)
+    {
+      if (!Request::has('limit', 'get')) {
+        return false;
+      } 
+      if (!$value) return true;
+      if (!is_numeric($value) ) return false;
+      if ($value <= 0 ) return false;
+      else return  true;
+    }
+
+
+    /**
+    * 分页数量验证
+    *
+    */
+    public function has_limit($value, $data)
+    {
+      if (!Request::has('page', 'get')) {
+        return false;
+      }
+      if (!$value) return true;
+      if (!is_numeric($value) ) return false;
+      if ($value <= 0 ) return false;
+      else return  true;
     }
 }
 

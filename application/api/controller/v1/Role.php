@@ -91,8 +91,9 @@ class Role extends Base
     */
     public function getRoleList()
     {
+      (new DtreeNode())->scene('getRoleList')->gocheck();
         $hasData = (new RoleService())->getRoleList();
-        if($hasData->isEmpty()) {
+        if(!$hasData) {
           throw new ErrorException([
             'msg'=>'没有权限角色分组，请先添加',
             'code' => 500

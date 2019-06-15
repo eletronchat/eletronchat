@@ -144,8 +144,20 @@ class Role extends Base
      */
     public function getRoleList()
     {
+      //分页
+      if (Request::has('limit', 'get') && Request::has('page', 'get')) {
+      $list = (new AuthGroup())
+        ->field('id,title,descript')
+        ->append(['parentId'])
+        ->order('id desc')
+        ->paginate(Request::get('limit/d'));
+        $total = $list->total();
+        $list = $list->toArray();
+        $list = $list['data'];
+        return ['data'=>$list, 'count'=>$total];
+      }
       $hasData = (new AuthGroup())
-        ->field('id,title')
+        ->field('id,title,descript')
         ->append(['parentId'])
         ->order('id desc')
         ->select();

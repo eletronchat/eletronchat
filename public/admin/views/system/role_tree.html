@@ -1,0 +1,40 @@
+<div class="layui-card">
+  <div class="layui-card-header">权限目录树</div>
+  <div class="layui-card-body">
+    <form class="layui-form">
+      <div class="layui-form-item">
+        <div class="layui-input-block" style="margin-left:0px">
+          <div id="LAY-auth-tree-index"></div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block" >
+          <button class="layui-btn" type="submit" lay-submit lay-filter="LAY-auth-tree-submit">确定</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+  <script>
+
+    layui.use(['jquery', 'authtree', 'form', 'layer'], function(){
+	var $ = layui.jquery;
+	var authtree = layui.authtree;
+	var form = layui.form;
+	var layer = layui.layer;
+	// 一般来说，权限数据是异步传递过来的
+	$.ajax({
+		url: '/json/tree.json',
+		dataType: 'json',
+		success: function(data){
+            var trees = data.data.trees;
+            // 如果后台返回的不是树结构，请使用 authtree.listConvert 转换
+            authtree.render('#LAY-auth-tree-index', trees, {
+				inputname: 'authids[]', 
+				layfilter: 'lay-check-auth', 
+				autowidth: true,
+			});
+        }
+    });
+    });
+</script>

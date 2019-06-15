@@ -56,7 +56,7 @@
                   <div class="layui-col-md3">
                     客服列表
                   </div>
-                    <form class="layui-form layui-col-md7" action="" lay-filter="search">  
+                    <form class="layui-form layui-col-md5 layui-col-md-offset4" action="" lay-filter="search">  
                       <div class="layui-form-item">
                         <div class="layui-inline">
                           <div class="layui-input-inline" style="width:100px">
@@ -69,24 +69,18 @@
                             <input class="layui-input" placeholder="输入客服姓名/昵称/帐号/手机号" name="keyword" value="" >
                             <i class="layui-icon dtree-icon" id="search_node">&#xe615;</i>
                           </div>
-                          <div class="layui-input-inline" style="width: 100px;">
-                              <select name="action">
-                                <option value="">批量操作</option>
-                                <option value="0571">杭州</option>
-                              </select>  
-                          </div>
                         </div>
                       </div> 
                   </form>
-                    <div class="layui-col-md1">
-                      <button class="layui-btn addmember" data-type="addmember">
-                        添加客服
-                      </button>
-                    </div>
               </div>
               <!--数据表格, start-->
               <div class="layui-card-body">
                  <table id="table" lay-filter="table" class="layui-table"></table>
+                <script type="text/html" id="test-table-toolbar-toolbarDemo">
+                  <div class="layui-inline" lay-event="add" title="添加"><i class="layui-icon layui-icon-add-1"></i></div>
+                  <div class="layui-inline" lay-event="lock" title="锁定"><i class="layui-icon layui-icon-password"></i></div>
+                  <div class="layui-inline" lay-event="del" title="删除"><i class="layui-icon layui-icon-delete"></i></div>
+                </script>
                  <script type="text/html" id="tableImg">
                    <img  class="photo" src="{{d.img}}" style="max-width:25px"/>
                  </script>
@@ -104,7 +98,10 @@
         </div>
         </div>
         <div class="layui-tab-item">
-        tab 2
+          <table id="role_list" lay-filter="role_list" class="layui-table"></table>
+          <script type="text/html" id="role_bar">
+            <a class="layui-btn layui-btn-xs" lay-event="role_edit">编辑</a>
+          </script>
         </div>
       </div>
     </div>

@@ -113,22 +113,6 @@
 
 
     //****** 添加客服表单处理 s******//
-    //表单弹出层
-    $('.addmember').on('click', function(){
-       layui.cache.addmember = admin.popup({
-        title: '添加客服'
-        ,shade: 0
-        ,anim: -1
-        ,area: ['700px', '600px']
-        ,id: 'layadmin-layer-skin-test'
-        ,skin: 'layui-anim layui-anim-upbit'
-        ,content: $('#addmember-dom')
-        ,btnAlign: 'c'
-        ,scrollbar: false
-        ,tips: [1, '#c00']
-      });
-
-    });
     //头像上传
     var uploadInst = upload.render({
       elem: '#upload-img' //绑定元素
@@ -268,17 +252,18 @@
         ,headers: {"access_token": layui.data('layuiAdmin').access_token}
         ,url: layui.cache.rest_url + '/members'
         ,page: true                 //开启分页
+        ,toolbar: '#test-table-toolbar-toolbarDemo'
         ,response:{ statusName:'errorCode' }
         ,cols:         [[                   //表头
         {type:'checkbox', fixed: 'left'}
         ,{field:        'uid',                title:     'ID',          width:60,   sort: true, align: 'center'}
         ,{field:       'account',           title:     '帐号',        width:100,align: 'center' }
-        ,{field:       'username',          title:     '姓名',        width:90,align: 'center'}
-        ,{field:       'img',               title:     '头像',        width:60,    templet: "#tableImg"}
-        ,{field:       'phone',             title:     '<i class="layui-icon">&#xe642;</i>手机',        width:120,align: 'center'}
-        ,{field:       'email',             title:     '邮箱',        width:150,align: 'center'}
-        ,{field:       'receives',          title:     '接待量',      width:80, sort: true, align: 'center'}
-        ,{field:       'nick_name',         title:     '昵称',        width:90,align: 'center'}
+        ,{field:       'username',          title:     '姓名',  width:90,align: 'center', edit:'text'}
+        ,{field:       'img',               title:     '头像',        width:60,    templet: "#tableImg", event:'show_img'}
+        ,{field:       'phone',             title:     '手机', edit:'text',        width:120,align: 'center'}
+        ,{field:       'email',             title:     '邮箱',        width:150,align: 'center', edit:'text'}
+        ,{field:       'receives',          title:     '接待量', edit:'text',      width:90, sort: true, align: 'center'}
+        ,{field:       'nick_name',         title:     '昵称',        width:90,align: 'center', edit:'text'}
         ,{field:       'role',              title:     '角色',        width:      100,align: 'center'}
         ,{field:'is_lock', title:'是否锁定', width:110, templet: '#checkboxTpl', unresize: true,align: 'center'}
         ,{fixed: 'right', title:'操作', toolbar: '#table_bar', width:120,align: 'center'}
@@ -305,7 +290,36 @@
             });
           
         });
-    //删除和修改
+
+    //监听单元格编辑
+    table.on('edit(table)', function(obj){
+      var value = obj.value //得到修改后的值
+        ,data = obj.data //得到所在行所有键值
+        ,field = obj.field; //得到字段
+        //:xxx 字段值要进行验证
+      $.ajax({
+        headers: { "access_token": layui.data('layuiAdmin').access_token },
+        url: layui.cache.rest_url+"/members/" + data.uid,
+        data:'{"'+field+'":"'+value+'"}',
+        type: "PUT",
+        success: function(res) {
+          if (res.errorCode == 0) {
+            layer.msg(res.msg, {icon: 1});
+          } else {
+            layer.msg(res.msg, {icon: 2});
+          }
+        },
+        error: function(res){
+          layer.msg('响应失败', {icon: 5});
+        }
+      });  
+     // layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value, {
+     //   offset: '15px'
+     // });
+    });
+
+    
+    //删除和修改行
     layui.table.on('tool(table)', function(obj){
       if (obj.event === 'del') {
         layer.confirm('真的删除行么', function(index){
@@ -340,6 +354,47 @@
       });
       }
     })
+    //单元格事件
+     table.on('tool(table)', function(obj){
+        console.log(obj);
+        if (obj.event === 'show_img') {
+          layer.open({
+            type: 1, 
+            shade: 0.3,
+            title: false,
+            shadeClose: true,
+            content: "<img src='"+obj.data.img+"' />"
+          }); 
+        }
+     })
+    //监听工具栏事件
+    //监听事件
+    table.on('toolbar(table)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      switch(obj.event){
+        case 'add':
+          layui.cache.addmember = admin.popup({
+            title: '添加客服'
+            ,shade: 0
+            ,anim: -1
+            ,area: ['700px', '600px']
+            ,id: 'layadmin-layer-skin-test'
+            ,skin: 'layui-anim layui-anim-upbit'
+            ,content: $('#addmember-dom')
+            ,btnAlign: 'c'
+            ,scrollbar: false
+            ,tips: [1, '#c00']
+          });
+          break;
+        case 'del':
+          layer.msg('删除');
+          break;
+        case 'lock':
+          layer.msg('锁定');
+          break;
+      };
+    });
+
     //************ 数据表格,            end        **********//
     //************ 搜索, start ******************************/
       $.ajax({
@@ -359,6 +414,32 @@
         }
       });
     //************ 搜索, end ******************************/
+
+    //************ 角色设置, start ***********************/
+    table.render({
+        elem:'#role_list'
+        ,headers: {"access_token": layui.data('layuiAdmin').access_token}
+        ,url: layui.cache.rest_url + '/roleList'
+        ,page: true                 //开启分页
+        ,response:{ statusName:'errorCode' }
+        ,cols: [[
+        {field:'title',title:'名称',width:100,align: 'center',fixed: 'left'}
+        ,{field:'descript',title:'描述',  width:490,edit:'text'}
+        ,{fixed: 'right', title:'操作', toolbar: '#role_bar', width:120,align: 'center'}
+        ]]
+        });
+    layui.table.on('tool(role_list)', function(obj){
+      if (obj.event === 'role_edit'){
+        admin.popupRight({
+          id: 'LAY_adminPopupLayerTest'
+          ,success: function(){
+            //$('#'+ this.id).html('<div style="padding: 20px;">权限树</div>');
+            layui.view(this.id).render('system/role_tree')
+          }
+        });
+      }
+    });
+    //************ 角色设置, end   ***********************/
 
   });
   
