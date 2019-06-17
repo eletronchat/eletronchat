@@ -17,5 +17,21 @@ class AuthRule extends Base
       return $result;
     }
 
+
+    /**
+     * 规则树
+     *
+     */
+    public function allToTree()
+    {
+        $result = self::
+          field(['title'=>'name','id'=>'value', 'pid', 'concat(path,"-",id)'=>'fullpath'])
+          ->order('fullpath') 
+          ->select();
+      return $result;
+    }
+
+
+    
 }
 

@@ -181,4 +181,32 @@ class Role extends Base
             new ErrorException(['msg'=>'服务器内部错误，数据删除失败']);
         }
      }
+
+
+    /**
+    * 单个角色权限目录树
+    * @http /api/v1/roleList/:id
+    * @param init   @id   角色id
+    */
+    public function getRoleById()
+    {
+        (new DtreeNode())->scene('getRoleById')->gocheck();
+        $has_data = (new RoleService())->getRoleById();
+        if ($has_data) {
+            return json(['data'=>['trees'=>$has_data]]);
+        } else {
+            new ErrorException(['msg'=>'服务器内部错误，数据删除失败']);
+        }
+    }
+
+
+     /**
+     * 更新角色
+     *
+     */
+     public function uploadRoleById()
+     {
+         (new DtreeNode())->scene('uploadRoleById')->gocheck();
+         dump(1);
+     }
 }

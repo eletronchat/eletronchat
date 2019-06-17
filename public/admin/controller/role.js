@@ -430,10 +430,10 @@
         });
     layui.table.on('tool(role_list)', function(obj){
       if (obj.event === 'role_edit'){
+        layui.cache.role_id = obj.data.id; 
         admin.popupRight({
           id: 'LAY_adminPopupLayerTest'
           ,success: function(){
-            //$('#'+ this.id).html('<div style="padding: 20px;">权限树</div>');
             layui.view(this.id).render('system/role_tree')
           }
         });

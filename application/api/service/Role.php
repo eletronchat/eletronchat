@@ -18,7 +18,7 @@ use think\facade\Config;
 use think\facade\Env;
 use MemberGroupAccess;
 use app\api\model\Image;
-  
+use app\api\model\AuthRule;
 
 class Role extends Base
 {
@@ -305,7 +305,6 @@ class Role extends Base
 
      }
       
-
     
     /**
      * 删除成员
@@ -330,5 +329,37 @@ class Role extends Base
           }
  					return true;
      }
+
+
+    /**
+    * 单个角色权限目录树
+    *
+    */
+    public function getRoleById()
+    {
+        $roleList = (new AuthGroup())->getRulesById();
+        $checkedIds = explode(',', $roleList);
+        $data = (new AuthRule())->AllToTree()->toArray();         
+         foreach ($data as &$it){
+           $el = &$it; 
+           $map[$it['value']] = &$it;
+         }
+         foreach ($data as &$it){
+           $parent = &$map[$it['pid']];
+           unset($it['pid']);
+           unset($it['fullpath']);
+           if(in_array($it['value'], $checkedIds)) {
+              $it['checked'] = true;
+           } else {
+              $it['checked'] = false;
+           }
+           if($parent) {
+             $parent['list'][] = &$it;
+           }else{
+             $tree[] = &$it;
+           }
+         }
+        return $tree;
+    }
 }
 

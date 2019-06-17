@@ -25,8 +25,16 @@ Route::Group('api/:version', function(){
 
 //权限管理
 Route::Group('api/:version', function(){
-  //权限角色列表
+  //所有权限角色列表
   Route::get('/roleList', 'api/:version.Role/getRoleList');
+  //单个角色权限目录树
+  Route::get('/roleList/:id', 'api/:version.Role/getRoleById');
+  //更新角色
+  Route::put('/roleList/:id', 'api/:version.Role/uploadRoleById');
+});
+
+//成员管理
+Route::Group('api/:version', function(){
   //添加成员
   Route::post('/members', 'api/:version.Role/addMember');
   //读取成员
@@ -36,7 +44,6 @@ Route::Group('api/:version', function(){
   //删除成员
   Route::delete('/members/:uid', 'api/:version.Role/del');
 });
-
 //获取token
 Route::Group('api/:version', function(){
   //获取token

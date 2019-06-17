@@ -13,6 +13,17 @@ class AuthGroup extends Base
     }
 
 
+    /**
+    * 获取角色现在的权限
+    * 
+    */
+    public function getRulesById()
+    {
+        $id = input('id');
+        $result = self::where('id', $id)->field('rules')->find();
+        return $result['rules'];
+    }
+
 }
 
 

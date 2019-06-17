@@ -31,6 +31,8 @@ class DtreeNode extends Base
     'limit'        => 'has_limit',
     'page'        => 'has_page',
     'uid'         => 'require|number|gt0|hasUid',
+    'id'          => 'require|number|gt0',
+    'rules'       => 'require|isArray'
   ];
 
   protected $message       = [
@@ -52,7 +54,6 @@ class DtreeNode extends Base
     'account.require'            => '请添加账号account',
     'uid.gt0'                    => '用户uid必须大于0',
     'uid.hasUid'                 => '没有这个成员',
-    ''
   ];
 
   //场景定义
@@ -66,7 +67,9 @@ class DtreeNode extends Base
      'getMembers'  => ['limit', 'page'],  //获取成员场景
      'editMember'  => ['uid'],  //:xxx 修改成员有多个字段要对应验证
      'delMember'   => ['uid'], //删除成员
-     'getRoleList' => ['page', 'limit'] //获取权限
+     'getRoleList' => ['page', 'limit'], //获取权限
+     'getRoleById' => ['id'], //单个角色权限目录树
+     'uploadRoleById' => ['id', 'rules'] //更新角色
   ];
 
     
@@ -91,7 +94,6 @@ class DtreeNode extends Base
             $this->rule['nodeId'] = 'require|forbiden';
       } 
   }
-
 
 
    /**
@@ -123,6 +125,7 @@ class DtreeNode extends Base
       }
     }
  	
+
 		/**
 			*  是否汉字
 			*  @return boolean
@@ -229,6 +232,19 @@ class DtreeNode extends Base
       if ($value <= 0 ) return false;
       else return  true;
     }
+
+  /**
+   * 是否数组 
+   *
+   */
+   public function isArray($value)
+   {
+     if (is_array($value)) {
+         return true;
+     } else {
+         return false;
+     }
+   }
 }
 
 
