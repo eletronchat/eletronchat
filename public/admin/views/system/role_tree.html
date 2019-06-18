@@ -16,7 +16,6 @@
   </div>
 </div>
   <script>
-
     layui.use(['jquery', 'authtree', 'form', 'layer'], function(){
       var $ = layui.jquery;
       var authtree = layui.authtree;
@@ -33,7 +32,8 @@
           authtree.render('#LAY-auth-tree-index', trees, {
             inputname: 'authids[]', 
             layfilter: 'lay-check-auth', 
-            autowidth: true,
+            'theme': 'auth-skin-default',
+            themePath: './css/'
           });
         }
       });
@@ -45,11 +45,12 @@
         $.ajax({
           headers: {"access_token": layui.data('layuiAdmin').access_token},
           url: layui.cache.rest_url + '/roleList/' + layui.cache.role_id,
-          data: {rulues: authids},
+          data: {rules: authids},
           type: "PUT",
           success: function(res) {
             if (res.errorCode == 0) {
               layer.msg(res.msg, {icon: 1});
+              layer.close(layui.cache.popuRight);
             } else {
               layer.msg(res.msg, {icon: 2});
             }

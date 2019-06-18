@@ -361,5 +361,21 @@ class Role extends Base
          }
         return $tree;
     }
+
+    /**
+    * 更新角色
+    *
+    */
+    public function  uploadRoleById()
+    {
+        $rules = implode(',', Request::param('rules', 'put'));
+        $id = Request::param('id/d', 'put');
+        $is_upload = (new AuthGroup())->save(['rules'=>$rules], ['id'=>$id]);
+        if ($is_upload) {
+          return true;
+        } else {
+          return false;
+        }
+   }
 }
 

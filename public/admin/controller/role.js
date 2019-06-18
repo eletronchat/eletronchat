@@ -431,7 +431,7 @@
     layui.table.on('tool(role_list)', function(obj){
       if (obj.event === 'role_edit'){
         layui.cache.role_id = obj.data.id; 
-        admin.popupRight({
+        layui.cache.popuRight = admin.popupRight({
           id: 'LAY_adminPopupLayerTest'
           ,success: function(){
             layui.view(this.id).render('system/role_tree')

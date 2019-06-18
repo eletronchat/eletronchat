@@ -206,7 +206,12 @@ class Role extends Base
      */
      public function uploadRoleById()
      {
-         (new DtreeNode())->scene('uploadRoleById')->gocheck();
-         dump(1);
+        (new DtreeNode())->scene('uploadRoleById')->gocheck();
+        $is_upload = (new RoleService())->uploadRoleById();
+        if (!$is_upload) {
+            throw new ErrorException();
+        } else {
+            return parent::successMessage();
+        }
      }
 }
