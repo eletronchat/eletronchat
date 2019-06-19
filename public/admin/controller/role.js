@@ -321,7 +321,7 @@
     
     //删除和修改行
     layui.table.on('tool(table)', function(obj){
-      if (obj.event === 'del') {
+      if (obj.event === 'del_one') {
         layer.confirm('真的删除行么', function(index){
           layer.close(index);
           $.ajax({
@@ -338,8 +338,17 @@
           }); 
         });
       }
+      //显示头像
+      if (obj.event === 'show_img') {
+        layer.open({
+          type: 1, 
+          shade: 0.3,
+          title: false,
+          shadeClose: true,
+          content: "<img src='"+obj.data.img+"' />"
+        }); 
+      }
       if (obj.event === 'edit') {
-
        layui.cache.addmember = admin.popup({
         title: '添加客服'
         ,shade: 0
@@ -354,19 +363,6 @@
       });
       }
     })
-    //单元格事件
-     table.on('tool(table)', function(obj){
-        console.log(obj);
-        if (obj.event === 'show_img') {
-          layer.open({
-            type: 1, 
-            shade: 0.3,
-            title: false,
-            shadeClose: true,
-            content: "<img src='"+obj.data.img+"' />"
-          }); 
-        }
-     })
     //监听工具栏事件
     //监听事件
     table.on('toolbar(table)', function(obj){

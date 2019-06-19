@@ -182,7 +182,7 @@ class Role extends Base
        }
        $uid = Db::name('member')->insertGetId([
          'username'      => Request::post('username/s'),
-           'passwd'      => md5(Request::post('passwd/s')),
+           'passwd'      => get_hash(Request::post('passwd/s')),
            'img_id'      => $img_id,
            'account'     => Request::post('account/s'),
            'receives'    => $receives,
@@ -361,6 +361,7 @@ class Role extends Base
          }
         return $tree;
     }
+
 
     /**
     * 更新角色

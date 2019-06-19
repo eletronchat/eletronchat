@@ -49,7 +49,7 @@ Route::Group('api/:version', function(){
   //获取token
   Route::get('/token', 'api/:version.Token/getToken');
   //获取验证码
-  Route::get('/verCode', 'api/:version.Token/getVerCode');
+  Route::get('/verCode/:time', 'api/:version.Token/getVerCode');
   //登出
   Route::put('/logout', 'api/:version.Token/logout');
 });

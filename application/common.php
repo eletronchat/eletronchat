@@ -10,3 +10,14 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+
+/**
+ * 获取哈稀值
+ * @param  $str   string    字符串
+ * @return string   哈稀字符串
+ */
+function get_hash($str) 
+{
+    $sault = config('app.sault');
+    return md5(md5($str).$sault);
+}

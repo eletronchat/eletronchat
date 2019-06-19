@@ -11,6 +11,7 @@ namespace app\api\controller\v1;
 use think\Controller;
 use think\facade\Request;
 use think\captcha\Captcha;
+use app\api\validate\Token as TokenValidate;
 
 class Token extends  Controller
 {
@@ -21,6 +22,7 @@ class Token extends  Controller
      */
     public function getToken()
     {    
+        (new TokenValidate())->scene('getToken')->gocheck();
        //$isBoot = captcha_check(Request::param('vercode', 'post'));
         return array(
           'errorCode' => 0,
@@ -37,6 +39,10 @@ class Token extends  Controller
     public function getVerCode()
     {
 			$captcha = new Captcha();
+      $captcha = new Captcha();
+      $captcha->codeSet = '0123456789';
+      $captcha->fontSize = 40;
+      $captcha->length   = 2;
 			return $captcha->entry();  
     }
 

@@ -1,4 +1,5 @@
 <?php 
+
 /**
  * AddMemberValidate   用户组验证器
  * @author wuchuheng 

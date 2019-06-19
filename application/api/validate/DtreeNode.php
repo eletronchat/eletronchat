@@ -158,7 +158,8 @@ class DtreeNode extends Base
      */
      protected function nickNameIsUnique($value, $data) 
      {
-         $hasData = (new Member())->where('nick_name', '=', $value)->find();          if ($hasData) return false;
+         $hasData = (new Member())->where('nick_name', '=', $value)->find();
+         if ($hasData) return false;
          else return true;
      }
 

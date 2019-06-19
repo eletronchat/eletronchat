@@ -86,7 +86,7 @@
                  </script>
                  <script type="text/html" id="table_bar">
                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del_one">删除</a>
                  </script>
                  <script type="text/html" id="checkboxTpl">
                    <input type="checkbox" name="is_lock" value="{{d.uid}}" title="锁定" data-id="{{d.id}}" lay-filter="is_lock" {{ d.is_lock == 1 ? 'checked' : '' }}>

@@ -34,6 +34,12 @@ class Base extends Controller
               }
           }
         }
+        $authName = Db::name('tmp')->select();
+        foreach($authName as $v) {
+          if (Db::name('auth_rule')->where('name', $v['name'])->find()) {
+              Db::name('auth_rule')->where('name', $v['name'])->delete();
+          }
+        }
       }
     }
 
