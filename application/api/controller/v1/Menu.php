@@ -3,7 +3,7 @@ namespace app\api\controller\v1;
 
 use app\api\model\AuthRule;
 
-class Module extends Base
+class Menu extends Base
 {
     /**
      * 获取功能模块列表

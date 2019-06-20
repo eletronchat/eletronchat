@@ -12,6 +12,7 @@ use think\Controller;
 use think\facade\Request;
 use think\captcha\Captcha;
 use app\api\validate\Token as TokenValidate;
+use app\api\service\Token as TokenService;
 
 class Token extends  Controller
 {
@@ -23,11 +24,12 @@ class Token extends  Controller
     public function getToken()
     {    
         (new TokenValidate())->scene('getToken')->gocheck();
+        $token = (new TokenService())->getToken();
        //$isBoot = captcha_check(Request::param('vercode', 'post'));
         return array(
           'errorCode' => 0,
           'msg' => 'success',
-          'data'=>['access_token' => 'hello,you are login']
+          'data'=>['access_token' =>$token]
         );
     }
 
@@ -40,9 +42,9 @@ class Token extends  Controller
     {
 			$captcha = new Captcha();
       $captcha = new Captcha();
-      $captcha->codeSet = '0123456789';
+      $captcha->codeSet = '0';
       $captcha->fontSize = 40;
-      $captcha->length   = 2;
+      $captcha->length  = 3;
 			return $captcha->entry();  
     }
 

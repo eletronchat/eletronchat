@@ -9,8 +9,14 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-//api 菜单列表
-Route::get('api/:version/moduleList', 'api/:version.module/list');
+//api 后台模式菜单
+Route::group('api/:version', function(){
+  //自动切换模式
+  Route::get('/menu', 'api/:version.Menu/list');
+  //管理模式和客服模式选择
+  Route::get('/menu/:mode',  'api/:version.Menu/list');
+});
+
 //api 客服管理
 Route::Group('api/:version', function(){
   //客服分类目录树

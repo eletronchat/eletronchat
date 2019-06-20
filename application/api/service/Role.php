@@ -125,7 +125,8 @@ class Role extends Base
            unset($el['count']);
            unset($el['pid']);
            unset($el['fullpath']);
-           $map[$it['id']] = &$it; }  //数据的ID名生成新的引用索引树
+           $map[$it['id']] = &$it; 
+         }  //数据的ID名生成新的引用索引树
          foreach ($items as &$it){
            $parent = &$map[$it[$pid]];
            if($parent) {
