@@ -19,6 +19,7 @@ use think\facade\Env;
 use MemberGroupAccess;
 use app\api\model\Image;
 use app\api\model\AuthRule;
+use app\api\service\Cache as CacheService;
 
 class Role extends Base
 {
@@ -302,6 +303,8 @@ class Role extends Base
          Db::rollback();
          return false;
        }
+       //更新成员缓存
+       (new CacheService())->updataByMemberUid($member->uid);
        return true;
 
      }
@@ -373,6 +376,8 @@ class Role extends Base
         $rules = implode(',', Request::param('rules', 'put'));
         $id = Request::param('id/d', 'put');
         $is_upload = (new AuthGroup())->save(['rules'=>$rules], ['id'=>$id]);
+        //更新缓存
+        (new Cache())->updateByAuthGroupId($id);
         if ($is_upload) {
           return true;
         } else {

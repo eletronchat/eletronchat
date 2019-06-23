@@ -21,7 +21,7 @@ class AuthRule extends Base
             break;
       }
       //自动选择，优先管理模式
-      $hasData = self::where('pid = 19')
+      $hasData = self::where('pid = 2')
         ->where('is_side_menu = 1')
         ->field('jump,title,icon,data_name as name')
         ->field('title,icon,data_name as name,jump')

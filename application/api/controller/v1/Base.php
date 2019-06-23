@@ -11,16 +11,31 @@ namespace app\api\controller\v1;
 use think\Controller;
 use think\Db;
 use think\facade\Env;
+use app\api\service\Cache;
+use app\api\validate\Token as TokenValidate;
+use think\facade\Request;
+use app\lib\exception\ErrorException;
 
- 
 class Base extends Controller
 {
     public function initialize()
     {
+      if (!isset($_SERVER['HTTP_ACCESS_TOKEN'])) {
+        throw new ErrorException(['msg'=>'请登录!']);
+      }
+      $has_rules = (new Cache())->getRulesByToken($_SERVER['HTTP_ACCESS_TOKEN']);
+      //过期验证
+      if (!$has_rules) {
+        throw new ErrorException(['msg'=>'很抱歉！由于您的登录信息已过期，请重新登录', 'errorCode' => 1001, 'code'=>200]);
+      }
+      //权限验证
+      $rule = request()->module() . '/' . request()->controller() . '/' . request()->action();
+      
+      if (!in_array($rule, $has_rules)) {
+        throw new ErrorException(['msg'=>'您的权限不足，操作无效', 'code'=>200, 'errorCode'=>500000]);
+      } 
+
       if (Env::get('status', 'null') === 'dev') {
-        $redis = new \Redis();
-        $redis->connect('127.0.0.1', 6379);
-        $hash = time();
         $class = __NAMESPACE__ . '\\' . substr(request()->controller(), 3);
         $reflector = new \reflectionClass($class);
         foreach ($reflector->getMethods() as $v){
@@ -37,10 +52,11 @@ class Base extends Controller
         $authName = Db::name('tmp')->select();
         foreach($authName as $v) {
           if (Db::name('auth_rule')->where('name', $v['name'])->find()) {
-              Db::name('auth_rule')->where('name', $v['name'])->delete();
+              Db::name('tmp')->where('name', $v['name'])->delete();
           }
         }
       }
+
     }
 
 

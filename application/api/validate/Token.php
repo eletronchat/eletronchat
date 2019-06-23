@@ -17,7 +17,8 @@ class Token  extends Base
     protected $rule = [
       'account' => 'require',
       'passwd'   => 'require',
-      'vercode'  => 'require|checkCode|checkUserInfo'
+      'vercode'  => 'require|checkCode|checkUserInfo',
+      'access-token' => 'hasToken'
     ];
 
     protected $message = [
@@ -25,15 +26,18 @@ class Token  extends Base
       'passwd.require'  => '请输入密码',
       'vercode.require' => '请输入图片验证码',
       'vercode.checkCode' => '验证码错误',
-      'vercode.checkUserInfo' => '账号或密码错误'
+      'vercode.checkUserInfo' => '账号或密码错误',
+      'access-token.hasToken'  => '您还未登录!请前登录'
     ];
 
     //场景定义
     protected $scene = [
-        'getToken'   => ['account', 'passwd', 'vercode']
+        'getToken'   => ['account', 'passwd', 'vercode'], //登入 
+        'logout'   => ['access-token'], //登出
+        'is_login'    => ['access-token'] //进入管理台
     ];
 
-
+    
     /**
     * 验证码验证
     */

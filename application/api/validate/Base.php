@@ -29,4 +29,18 @@ class Base extends Validate
         }
         return true;
     }
+
+
+    /**
+    * 是否有token
+    *
+    */
+    public function hasToken($value)
+    {
+      if(!isset($_SERVER['HTTP_ACCESS_TOKEN'])) {
+          return false;
+      } else {
+          return true;
+      }
+    }
 }

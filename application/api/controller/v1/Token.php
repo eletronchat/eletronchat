@@ -13,6 +13,7 @@ use think\facade\Request;
 use think\captcha\Captcha;
 use app\api\validate\Token as TokenValidate;
 use app\api\service\Token as TokenService;
+use app\lib\exception\ErrorException;
 
 class Token extends  Controller
 {
@@ -29,7 +30,7 @@ class Token extends  Controller
         return array(
           'errorCode' => 0,
           'msg' => 'success',
-          'data'=>['access_token' =>$token]
+          'data'=>['access-token' =>$token]
         );
     }
 
@@ -50,16 +51,24 @@ class Token extends  Controller
 
 
     /**
-    *  登录
-    * 
+    *  登出
+    * @http PUT
+    * @url  /api/v1/logout
+    * @return json
     */
     public function logout()
     {
-        return array(
-          'errorCode' => 0,
-          'msg' => 'success',
-          'data'=>['access_token' => 'hello,you are login']
-        );
+        (new TokenValidate())->scene('logout')->gocheck();
+        if(!(new TokenService())->logout()) {
+            throw new  ErrorException();
+        } else {
+          return array(
+            'errorCode' => 0,
+            'msg' => 'success',
+            'data'=>[]
+          );
+        }
+        
     }
 }
 

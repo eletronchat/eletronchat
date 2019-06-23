@@ -23,7 +23,8 @@
       var layer = layui.layer;
       // 一般来说，权限数据是异步传递过来的
       $.ajax({
-        headers: {"access_token": layui.data('layuiAdmin').access_token},
+        headers: {"access-token": layui.data('layuiAdmin') ['access-token']
+        },
         url: layui.cache.rest_url + '/roleList/' + layui.cache.role_id,
         dataType: 'json',
         success: function(data){
@@ -43,7 +44,8 @@
       form.on('submit(role_tree)', function(obj){
           var authids = authtree.getChecked('#LAY-auth-tree-index');
         $.ajax({
-          headers: {"access_token": layui.data('layuiAdmin').access_token},
+          headers: {"access-token": layui.data('layuiAdmin')['access-token']
+          },
           url: layui.cache.rest_url + '/roleList/' + layui.cache.role_id,
           data: {rules: authids},
           type: "PUT",

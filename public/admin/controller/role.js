@@ -22,7 +22,7 @@
   element.render();
      var DTree = dtree.render({
        headers: {
-         "access_token": layui.data('layuiAdmin').access_token
+         "access-token": layui.data('layuiAdmin')['access-token']
        },
       elem: "#tree",
       url: layui.cache.rest_url+"/group",
@@ -51,7 +51,7 @@
         addTreeNode: function(treeNode, $div){
           $.ajax({
             headers: {
-              "access_token": layui.data('layuiAdmin').access_token
+              "access-token": layui.data('layuiAdmin')['access-token']
             },
             type: "post",
             data: treeNode,
@@ -70,7 +70,7 @@
         editTreeNode: function(treeNode, $div){
           $.ajax({
             headers: {
-              "access_token": layui.data('layuiAdmin').access_token
+              "access-token": layui.data('layuiAdmin')['access-token']
             },
             type: "PUT",
             data: treeNode,
@@ -87,7 +87,7 @@
         delTreeNode: function(treeNode, $div){
           $.ajax({
             headers: {
-              "access_token": layui.data('layuiAdmin').access_token
+              "access-token": layui.data('layuiAdmin')['access-token']
             },
             type: "DELETE",
             data: treeNode,
@@ -151,7 +151,7 @@
     layer.ready(function(){
       var DTree = dtree.render({
        headers: {
-         "access_token": layui.data('layuiAdmin').access_token
+         "access-token": layui.data('layuiAdmin')['access-token']
        },
         elem: "#slTree",
         method: 'get',
@@ -225,7 +225,7 @@
          memberData.member_group_id = layui.cache.select_node_id;
          $.ajax({
            headers: {
-             "access_token": layui.data('layuiAdmin').access_token
+             "access-token": layui.data('layuiAdmin')['access-token']
            },
            url: layui.cache.rest_url + "/members",
            type: 'POST',
@@ -249,7 +249,8 @@
         //************ 数据表格,            start      *********//
         table.render({
         elem:'#table'
-        ,headers: {"access_token": layui.data('layuiAdmin').access_token}
+        ,headers: {"access-token": layui.data('layuiAdmin')['access-token']
+        }
         ,url: layui.cache.rest_url + '/members'
         ,page: true                 //开启分页
         ,toolbar: '#test-table-toolbar-toolbarDemo'
@@ -273,7 +274,8 @@
         form.on('checkbox(is_lock)', function(obj){
           var is_lock = obj.elem.checked ? 1 : 0;
             $.ajax({
-               headers: { "access_token": layui.data('layuiAdmin').access_token },
+               headers: { "access-token": layui.data('layuiAdmin') ['access-token']
+               },
                url: layui.cache.rest_url+"/members/" + this.value,
                data: {is_lock:is_lock},
                type: "PUT",
@@ -298,7 +300,8 @@
         ,field = obj.field; //得到字段
         //:xxx 字段值要进行验证
       $.ajax({
-        headers: { "access_token": layui.data('layuiAdmin').access_token },
+        headers: { "access-token": layui.data('layuiAdmin') ['access-token']
+        },
         url: layui.cache.rest_url+"/members/" + data.uid,
         data:'{"'+field+'":"'+value+'"}',
         type: "PUT",
@@ -325,7 +328,8 @@
         layer.confirm('真的删除行么', function(index){
           layer.close(index);
           $.ajax({
-            headers: {"access_token": layui.data('layuiAdmin').access_token},
+            headers: {"access-token": layui.data('layuiAdmin')['access-token']
+            },
             url: layui.cache.rest_url + "/members/" + obj.data.uid,
             type: "DELETE",
             success: function(res) {
@@ -395,7 +399,8 @@
     //************ 搜索, start ******************************/
       $.ajax({
         url: layui.cache.rest_url + "/roleList",
-        headers: { "access_token": layui.data('layuiAdmin').access_token },
+        headers: { "access-token": layui.data('layuiAdmin') ['access-token']
+        },
         type: 'GET',
         success: function(res) {
             if (res.errorCode == 0) {
@@ -414,7 +419,8 @@
     //************ 角色设置, start ***********************/
     table.render({
         elem:'#role_list'
-        ,headers: {"access_token": layui.data('layuiAdmin').access_token}
+        ,headers: {"access-token": layui.data('layuiAdmin')['access-token']
+        }
         ,url: layui.cache.rest_url + '/roleList'
         ,page: true                 //开启分页
         ,response:{ statusName:'errorCode' }
@@ -429,6 +435,7 @@
         layui.cache.role_id = obj.data.id; 
         layui.cache.popuRight = admin.popupRight({
           id: 'LAY_adminPopupLayerTest'
+          ,area: ['500px']
           ,success: function(){
             layui.view(this.id).render('system/role_tree')
           }
